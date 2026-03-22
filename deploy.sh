@@ -1,27 +1,29 @@
 #!/bin/bash
 
-echo -e "\033[0;32m🚀 正在部署到 GitHub...\033[0m"
+echo -e "\033[0;32m🚀 开始部署...\033[0m"
 
-# 构建网站
+# 1. 推送源文件到 GitHub
+echo "📦 推送源文件..."
+git add .
+git commit -m "更新源文件: $(date '+%Y-%m-%d %H:%M:%S')"
+git push origin main
+
+# 2. 生成网站
+echo "🏗️ 生成静态文件..."
 hugo -t theme2
 
-# 进入 public 目录
+# 3. 部署到 GitHub Pages
+echo "☁️ 部署到 GitHub Pages..."
 cd public
 
-# 初始化 git（如果需要）
 if [ ! -d ".git" ]; then
     git init
     git remote add origin https://github.com/ngc2237/ngc2237.github.io.git
 fi
 
-# 添加所有文件
 git add .
-
-# 提交
-git commit -m "更新博客: $(date '+%Y-%m-%d %H:%M:%S')"
-
-# 推送到 GitHub
-git push -f origin main
+git commit -m "部署博客: $(date '+%Y-%m-%d %H:%M:%S')"
+git push -f origin master
 
 cd ..
 
