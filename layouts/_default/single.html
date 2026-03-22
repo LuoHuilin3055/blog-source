@@ -29,7 +29,7 @@
     
     <div style="max-width: 1400px; margin: 0 auto; display: flex; gap: 40px; position: relative; z-index: 1;">
       <!-- 文章内容 -->
-      <article style="flex: 1; background: rgba(0,0,0,0.9); border-radius: 15px; padding: 40px; border: 1px solid rgba(0,255,255,0.3); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.5);">
+      <article style="flex: 1; background: rgba(0,0,0,0.9); border-radius: 15px; padding: 40px; border: 1px solid rgba(0,255,255,0.3); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: all 0.3s ease; transform: translateY(0);">
         <!-- 封面图片 -->
         {{ if $coverImage }}
         <div style="
@@ -49,6 +49,7 @@
               max-height: 400px;
               object-fit: cover;
               display: block;
+              transition: transform 0.3s ease;
             "
           />
           <!-- 渐变遮罩 -->
@@ -63,7 +64,7 @@
         </div>
         {{ end }}
         
-        <h1 style="color: #00ffff; font-size: clamp(2em, 5vw, 2.5em); margin: {{ if $coverImage }}-20px{{ else }}0{{ end }} 0 20px;">{{ .Title }}</h1>
+        <h1 style="color: #00ffff; font-size: clamp(2em, 5vw, 2.5em); margin: {{ if $coverImage }}-20px{{ else }}0{{ end }} 0 20px; text-shadow: 0 0 10px rgba(0,255,255,0.3); animation: fadeIn 0.8s ease;">{{ .Title }}</h1>
         
         <div style="color: #ccc; margin: 20px 0; display: flex; gap: 20px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
           <span>📅 {{ .Date.Format "2006-01-02" }}</span>
@@ -74,7 +75,9 @@
         <!-- 文章标签 -->
         {{ partial "article-tags.html" . }}
         
-        <div style="color: #fff; line-height: 1.8; margin-top: 30px;">{{ .Content }}</div>
+        <div class="article-content" style="color: #fff; line-height: 1.8; margin-top: 30px;">
+          {{ .Content }}
+        </div>
         
         <!-- 文章底部标签和分享 -->
         <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #333;">
@@ -91,3 +94,104 @@
 {{ define "footer" }}
   {{ partial "site-footer.html" . }}
 {{ end }}
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .article-content h2 {
+    color: #00ffff;
+    font-size: clamp(1.5em, 3vw, 1.8em);
+    margin: 40px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,255,255,0.2);
+  }
+  
+  .article-content h3 {
+    color: #00ffff;
+    font-size: clamp(1.2em, 2.5vw, 1.4em);
+    margin: 30px 0 15px;
+  }
+  
+  .article-content p {
+    margin: 15px 0;
+    line-height: 1.8;
+  }
+  
+  .article-content ul,
+  .article-content ol {
+    margin: 15px 0;
+    padding-left: 30px;
+  }
+  
+  .article-content li {
+    margin: 8px 0;
+  }
+  
+  .article-content a {
+    color: #00ffff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,255,255,0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .article-content a:hover {
+    color: #fff;
+    border-bottom-color: #00ffff;
+  }
+  
+  .article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+    display: block;
+  }
+  
+  .article-content blockquote {
+    border-left: 3px solid #00ffff;
+    padding: 10px 20px;
+    margin: 20px 0;
+    background: rgba(0,255,255,0.05);
+    border-radius: 0 8px 8px 0;
+  }
+  
+  .article-content code {
+    background: rgba(255,255,255,0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+  
+  .article-content pre {
+    background: rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+  
+  .article-content pre code {
+    background: none;
+    padding: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .article-content h2 {
+      font-size: 1.5em;
+    }
+    
+    .article-content h3 {
+      font-size: 1.2em;
+    }
+  }
+</style>

@@ -183,7 +183,8 @@
             link.classList.remove('active');
             if (link.getAttribute('href') === '#' + id) {
               link.classList.add('active');
-              link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              // 移除 scrollIntoView 避免页面反弹
+              // link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
           });
         }
