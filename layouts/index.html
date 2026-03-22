@@ -42,7 +42,7 @@
       " onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,255,255,0.4)'; this.style.border='1px solid #00ffff';"
          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.2)'; this.style.border='1px solid #333';">
         <h2 style="font-size: 1.5em; margin: 0 0 10px;">
-          <a href="{{ .RelPermalink }}" style="color: #fff; text-decoration: none;">{{ .Title }}</a>
+          <a href="{{ .Permalink }}" style="color: #fff; text-decoration: none;">{{ .Title }}</a>
         </h2>
         <div style="color: #888; font-size: 0.85em; margin-bottom: 15px;">
           {{ .Date.Format "2006-01-02" }} | {{ .ReadingTime }} 分钟
@@ -54,7 +54,7 @@
         <!-- 文章标签 -->
         {{ partial "article-tags.html" . }}
         
-        <a href="{{ .RelPermalink }}" style="
+        <a href="{{ .Permalink }}" style="
           display: inline-block;
           background: #00ffff;
           color: #000;
