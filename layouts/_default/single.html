@@ -15,7 +15,7 @@
     background-attachment: fixed;
     min-height: 100vh;
     padding: 120px 20px 60px;
-    background-color: #1e1e1e;
+    background-color: #000000;
     position: relative;
   ">
     <!-- 背景遮罩 -->
@@ -31,7 +31,7 @@
     
     <div style="max-width: 1400px; margin: 0 auto; display: flex; gap: 40px; position: relative; z-index: 1;">
       <!-- 文章内容 -->
-      <article style="flex: 1; background: #1e1e1e; border-radius: 15px; padding: 40px; border: 1px solid #333; box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: all 0.3s ease; transform: translateY(0);">
+      <article style="flex: 1; background: rgba(0,0,0,0.9); border-radius: 15px; padding: 40px; border: 1px solid rgba(0,255,255,0.3); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: all 0.3s ease; transform: translateY(0);">
         <!-- 封面图片 -->
         {{ if $coverImage }}
         <div style="
@@ -61,14 +61,14 @@
             left: 0;
             right: 0;
             height: 100px;
-            background: linear-gradient(180deg, transparent 0%, #1e1e1e 100%);
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 100%);
           "></div>
         </div>
         {{ end }}
         
-        <h1 style="color: #ffffff; font-size: clamp(2em, 5vw, 2.5em); margin: {{ if $coverImage }}-20px{{ else }}0{{ end }} 0 20px; animation: fadeIn 0.8s ease;">{{ .Title }}</h1>
+        <h1 style="color: #00ffff; font-size: clamp(2em, 5vw, 2.5em); margin: {{ if $coverImage }}-20px{{ else }}0{{ end }} 0 20px; text-shadow: 0 0 10px rgba(0,255,255,0.3); animation: fadeIn 0.8s ease;">{{ .Title }}</h1>
         
-        <div style="color: #888; margin: 20px 0; display: flex; gap: 20px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid #333;">
+        <div style="color: #ccc; margin: 20px 0; display: flex; gap: 20px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
           <span>📅 {{ .Date.Format "2006-01-02" }}</span>
           <span>📝 {{ .WordCount }} 字</span>
           <span>⏱️ {{ .ReadingTime }} 分钟</span>
@@ -77,7 +77,7 @@
         <!-- 文章标签 -->
         {{ partial "article-tags.html" . }}
         
-        <div class="article-content" style="color: #d4d4d4; line-height: 1.8; margin-top: 30px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+        <div class="article-content" style="color: #fff; line-height: 1.8; margin-top: 30px;">
           {{ .Content }}
         </div>
         
@@ -113,25 +113,22 @@
   }
   
   .article-content h2 {
-    color: #ffffff;
+    color: #00ffff;
     font-size: clamp(1.5em, 3vw, 1.8em);
     margin: 40px 0 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #333;
-    font-weight: 600;
+    border-bottom: 1px solid rgba(0,255,255,0.2);
   }
   
   .article-content h3 {
-    color: #cccccc;
+    color: #00ffff;
     font-size: clamp(1.2em, 2.5vw, 1.4em);
     margin: 30px 0 15px;
-    font-weight: 500;
   }
   
   .article-content p {
     margin: 15px 0;
     line-height: 1.8;
-    color: #d4d4d4;
   }
   
   .article-content ul,
@@ -142,17 +139,18 @@
   
   .article-content li {
     margin: 8px 0;
-    color: #cccccc;
   }
   
   .article-content a {
-    color: #569cd6;
+    color: #00ffff;
     text-decoration: none;
+    border-bottom: 1px solid rgba(0,255,255,0.3);
     transition: all 0.3s ease;
   }
   
   .article-content a:hover {
-    text-decoration: underline;
+    color: #fff;
+    border-bottom-color: #00ffff;
   }
   
   .article-content img {
@@ -161,27 +159,26 @@
     border-radius: 8px;
     margin: 20px 0;
     display: block;
+    box-shadow: 0 4px 15px rgba(0,255,255,0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .article-content img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0,255,255,0.5);
   }
   
   .article-content blockquote {
-    border-left: 3px solid #569cd6;
+    border-left: 3px solid #00ffff;
     padding: 10px 20px;
     margin: 20px 0;
-    background: rgba(86, 156, 214, 0.1);
+    background: rgba(0,255,255,0.05);
     border-radius: 0 8px 8px 0;
   }
   
-  .article-content code {
-    background: #2d2d2d;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 0.9em;
-    color: #d4d4d4;
-  }
-  
+  /* 代码高亮样式 */
   .article-content pre {
-    background: #252526;
+    background: #282c34;
     padding: 20px;
     border-radius: 8px;
     overflow-x: auto;
@@ -189,49 +186,260 @@
     border: 1px solid #333;
   }
   
+  .article-content code {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+  
   .article-content pre code {
     background: none;
     padding: 0;
-    color: #d4d4d4;
   }
   
-  .article-content pre code .keyword {
-    color: #569cd6;
+  /* Monokai 主题样式 */
+  .article-content .chroma {
+    color: #f8f8f2;
+    background-color: #282c34;
   }
   
-  .article-content pre code .string {
-    color: #ce9178;
+  .article-content .chroma .err {
+    color: #960050;
+    background-color: #1e0010;
   }
   
-  .article-content pre code .comment {
-    color: #6a9955;
+  .article-content .chroma .lntd {
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+    border: 0;
   }
   
-  .article-content pre code .number {
-    color: #b5cea8;
+  .article-content .chroma .lntable {
+    border-spacing: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
   }
   
-  .article-content pre code .function {
-    color: #dcdcaa;
+  .article-content .chroma .hl {
+    display: block;
+    width: 100%;
+    background-color: #fffc9e;
   }
   
-  .article-content pre code .operator {
-    color: #d4d4d4;
+  .article-content .chroma .lnt {
+    margin-right: 0.4em;
+    padding: 0 0.4em 0 0.4em;
+    color: #7f7f7f;
   }
   
-  @media (max-width: 1024px) {
+  .article-content .chroma .k {
+    color: #66d9ef;
+  }
+  
+  .article-content .chroma .kc {
+    color: #66d9ef;
+  }
+  
+  .article-content .chroma .kd {
+    color: #66d9ef;
+  }
+  
+  .article-content .chroma .kn {
+    color: #f92672;
+  }
+  
+  .article-content .chroma .kp {
+    color: #66d9ef;
+  }
+  
+  .article-content .chroma .kr {
+    color: #66d9ef;
+  }
+  
+  .article-content .chroma .kt {
+    color: #66d9ef;
+  }
+  
+  .article-content .chroma .na {
+    color: #a6e22e;
+  }
+  
+  .article-content .chroma .nc {
+    color: #a6e22e;
+  }
+  
+  .article-content .chroma .no {
+    color: #66d9ef;
+  }
+  
+  .article-content .chroma .nd {
+    color: #a6e22e;
+  }
+  
+  .article-content .chroma .ni {
+    color: #f8f8f2;
+  }
+  
+  .article-content .chroma .ne {
+    color: #a6e22e;
+  }
+  
+  .article-content .chroma .nf {
+    color: #a6e22e;
+  }
+  
+  .article-content .chroma .nl {
+    color: #f8f8f2;
+  }
+  
+  .article-content .chroma .nn {
+    color: #f8f8f2;
+  }
+  
+  .article-content .chroma .nx {
+    color: #a6e22e;
+  }
+  
+  .article-content .chroma .py {
+    color: #f8f8f2;
+  }
+  
+  .article-content .chroma .nt {
+    color: #f92672;
+  }
+  
+  .article-content .chroma .nv {
+    color: #f8f8f2;
+  }
+  
+  .article-content .chroma .l {
+    color: #ae81ff;
+  }
+  
+  .article-content .chroma .ld {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .s {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .sa {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .sb {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .sc {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .dl {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .sd {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .s2 {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .se {
+    color: #ae81ff;
+  }
+  
+  .article-content .chroma .sh {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .si {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .sx {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .sr {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .s1 {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .ss {
+    color: #e6db74;
+  }
+  
+  .article-content .chroma .m {
+    color: #ae81ff;
+  }
+  
+  .article-content .chroma .mb {
+    color: #ae81ff;
+  }
+  
+  .article-content .chroma .mf {
+    color: #ae81ff;
+  }
+  
+  .article-content .chroma .mh {
+    color: #ae81ff;
+  }
+  
+  .article-content .chroma .mi {
+    color: #ae81ff;
+  }
+  
+  .article-content .chroma .mo {
+    color: #ae81ff;
+  }
+  
+  .article-content .chroma .c {
+    color: #75715e;
+  }
+  
+  .article-content .chroma .ch {
+    color: #75715e;
+  }
+  
+  .article-content .chroma .cm {
+    color: #75715e;
+  }
+  
+  .article-content .chroma .c1 {
+    color: #75715e;
+  }
+  
+  .article-content .chroma .cs {
+    color: #75715e;
+  }
+  
+  .article-content .chroma .o {
+    color: #f92672;
+  }
+  
+  .article-content .chroma .ow {
+    color: #f92672;
+  }
+  
+  .article-content .chroma .p {
+    color: #f8f8f2;
+  }
+  
+  @media (max-width: 768px) {
     .article-content h2 {
       font-size: 1.5em;
     }
     
     .article-content h3 {
       font-size: 1.2em;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .article-content {
-      font-size: 16px;
     }
   }
 </style>

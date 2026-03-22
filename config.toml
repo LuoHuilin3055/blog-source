@@ -24,3 +24,15 @@ theme = "theme2"
     name = "Contact"
     url = "/contact/"
     weight = 30
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = true
+    lineNumbersInTable = false
+    noClasses = false
+    style = "monokai"
+    tabWidth = 4
