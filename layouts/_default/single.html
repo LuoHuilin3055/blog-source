@@ -176,9 +176,9 @@
     border-radius: 0 8px 8px 0;
   }
   
-  /* 代码高亮样式 - 匹配参考图片 */
+  /* 代码高亮样式 - 匹配Obsidian效果 */
   .article-content pre {
-    background: #1e1e1e;
+    background: #1a1a1a;
     padding: 0;
     border-radius: 8px;
     overflow-x: auto;
@@ -199,8 +199,8 @@
   
   /* 代码块整体样式 */
   .article-content .chroma {
-    color: #d4d4d4;
-    background-color: #1e1e1e;
+    color: #e6e6e6;
+    background-color: #1a1a1a;
     border-radius: 8px;
     position: relative;
   }
@@ -219,234 +219,229 @@
     border-radius: 4px;
   }
   
-  /* 行号样式 */
-  .article-content .chroma .lntd {
-    vertical-align: top;
-    padding: 0;
-    margin: 0;
-    border: 0;
+  /* 复制按钮 */
+  .article-content .chroma::before {
+    content: '📋';
+    position: absolute;
+    top: 10px;
+    right: 80px;
+    color: #888;
+    font-size: 0.9em;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
   }
   
-  .article-content .chroma .lntable {
-    border-spacing: 0;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    width: 100%;
+  .article-content .chroma:hover::before {
+    color: #00ffff;
+    background: rgba(0,255,255,0.1);
   }
   
-  .article-content .chroma .lnt {
-    margin-right: 1em;
-    padding: 15px 0.4em 15px 0.4em;
-    color: #606060;
-    text-align: right;
-    border-right: 1px solid #333;
-    font-size: 0.85em;
-  }
-  
+  /* 代码内容 */
   .article-content .chroma .code {
-    padding: 15px 10px;
+    padding: 15px 15px;
   }
   
-  /* 代码高亮颜色 - 匹配参考图片 */
+  /* 代码高亮颜色 - 匹配Obsidian效果 */
   .article-content .chroma .k {
-    color: #ce9178;
+    color: #ff79c6;
   }
   
   .article-content .chroma .kc {
-    color: #ce9178;
+    color: #ff79c6;
   }
   
   .article-content .chroma .kd {
-    color: #ce9178;
+    color: #ff79c6;
   }
   
   .article-content .chroma .kn {
-    color: #ce9178;
+    color: #ff79c6;
   }
   
   .article-content .chroma .kp {
-    color: #ce9178;
+    color: #ff79c6;
   }
   
   .article-content .chroma .kr {
-    color: #ce9178;
+    color: #ff79c6;
   }
   
   .article-content .chroma .kt {
-    color: #ce9178;
+    color: #8be9fd;
   }
   
   .article-content .chroma .na {
-    color: #9cdcfe;
+    color: #50fa7b;
   }
   
   .article-content .chroma .nc {
-    color: #4ec9b0;
+    color: #50fa7b;
   }
   
   .article-content .chroma .no {
-    color: #4ec9b0;
+    color: #bd93f9;
   }
   
   .article-content .chroma .nd {
-    color: #4ec9b0;
+    color: #50fa7b;
   }
   
   .article-content .chroma .ni {
-    color: #d4d4d4;
+    color: #e6e6e6;
   }
   
   .article-content .chroma .ne {
-    color: #4ec9b0;
+    color: #50fa7b;
   }
   
   .article-content .chroma .nf {
-    color: #dcdcaa;
+    color: #50fa7b;
   }
   
   .article-content .chroma .nl {
-    color: #d4d4d4;
+    color: #e6e6e6;
   }
   
   .article-content .chroma .nn {
-    color: #d4d4d4;
+    color: #e6e6e6;
   }
   
   .article-content .chroma .nx {
-    color: #4ec9b0;
+    color: #50fa7b;
   }
   
   .article-content .chroma .py {
-    color: #d4d4d4;
+    color: #e6e6e6;
   }
   
   .article-content .chroma .nt {
-    color: #ce9178;
+    color: #ff79c6;
   }
   
   .article-content .chroma .nv {
-    color: #9cdcfe;
+    color: #f8f8f2;
   }
   
   .article-content .chroma .l {
-    color: #b5cea8;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .ld {
-    color: #dcdcaa;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .s {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .sa {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .sb {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .sc {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .dl {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .sd {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .s2 {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .se {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .sh {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .si {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .sx {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .sr {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .s1 {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .ss {
-    color: #ce9178;
+    color: #f1fa8c;
   }
   
   .article-content .chroma .m {
-    color: #b5cea8;
+    color: #bd93f9;
   }
   
   .article-content .chroma .mb {
-    color: #b5cea8;
+    color: #bd93f9;
   }
   
   .article-content .chroma .mf {
-    color: #b5cea8;
+    color: #bd93f9;
   }
   
   .article-content .chroma .mh {
-    color: #b5cea8;
+    color: #bd93f9;
   }
   
   .article-content .chroma .mi {
-    color: #b5cea8;
+    color: #bd93f9;
   }
   
   .article-content .chroma .mo {
-    color: #b5cea8;
+    color: #bd93f9;
   }
   
   .article-content .chroma .c {
-    color: #6a9955;
+    color: #6272a4;
   }
   
   .article-content .chroma .ch {
-    color: #6a9955;
+    color: #6272a4;
   }
   
   .article-content .chroma .cm {
-    color: #6a9955;
+    color: #6272a4;
   }
   
   .article-content .chroma .c1 {
-    color: #6a9955;
+    color: #6272a4;
   }
   
   .article-content .chroma .cs {
-    color: #6a9955;
+    color: #6272a4;
   }
   
   .article-content .chroma .o {
-    color: #d4d4d4;
+    color: #ff79c6;
   }
   
   .article-content .chroma .ow {
-    color: #d4d4d4;
+    color: #ff79c6;
   }
   
   .article-content .chroma .p {
-    color: #d4d4d4;
+    color: #e6e6e6;
   }
   
   @media (max-width: 768px) {
