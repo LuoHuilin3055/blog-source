@@ -15,7 +15,7 @@
     background-attachment: fixed;
     min-height: 100vh;
     padding: 120px 20px 60px;
-    background-color: #000000;
+    background-color: #1e1e1e;
     position: relative;
   ">
     <!-- 背景遮罩 -->
@@ -31,7 +31,7 @@
     
     <div style="max-width: 1400px; margin: 0 auto; display: flex; gap: 40px; position: relative; z-index: 1;">
       <!-- 文章内容 -->
-      <article style="flex: 1; background: rgba(0,0,0,0.9); border-radius: 15px; padding: 40px; border: 1px solid rgba(0,255,255,0.3); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: all 0.3s ease; transform: translateY(0);">
+      <article style="flex: 1; background: #1e1e1e; border-radius: 15px; padding: 40px; border: 1px solid #333; box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: all 0.3s ease; transform: translateY(0);">
         <!-- 封面图片 -->
         {{ if $coverImage }}
         <div style="
@@ -61,14 +61,14 @@
             left: 0;
             right: 0;
             height: 100px;
-            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 100%);
+            background: linear-gradient(180deg, transparent 0%, #1e1e1e 100%);
           "></div>
         </div>
         {{ end }}
         
-        <h1 style="color: #00ffff; font-size: clamp(2em, 5vw, 2.5em); margin: {{ if $coverImage }}-20px{{ else }}0{{ end }} 0 20px; text-shadow: 0 0 10px rgba(0,255,255,0.3); animation: fadeIn 0.8s ease;">{{ .Title }}</h1>
+        <h1 style="color: #ffffff; font-size: clamp(2em, 5vw, 2.5em); margin: {{ if $coverImage }}-20px{{ else }}0{{ end }} 0 20px; animation: fadeIn 0.8s ease;">{{ .Title }}</h1>
         
-        <div style="color: #ccc; margin: 20px 0; display: flex; gap: 20px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div style="color: #888; margin: 20px 0; display: flex; gap: 20px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid #333;">
           <span>📅 {{ .Date.Format "2006-01-02" }}</span>
           <span>📝 {{ .WordCount }} 字</span>
           <span>⏱️ {{ .ReadingTime }} 分钟</span>
@@ -77,7 +77,7 @@
         <!-- 文章标签 -->
         {{ partial "article-tags.html" . }}
         
-        <div class="article-content" style="color: #fff; line-height: 1.8; margin-top: 30px;">
+        <div class="article-content" style="color: #d4d4d4; line-height: 1.8; margin-top: 30px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
           {{ .Content }}
         </div>
         
@@ -88,7 +88,9 @@
       </article>
       
       <!-- 右侧目录栏 -->
-      {{ partial "enhanced-toc.html" . }}
+      <div style="flex-shrink: 0; width: 280px;">
+        {{ partial "enhanced-toc.html" . }}
+      </div>
     </div>
   </div>
 {{ end }}
@@ -111,22 +113,25 @@
   }
   
   .article-content h2 {
-    color: #00ffff;
+    color: #ffffff;
     font-size: clamp(1.5em, 3vw, 1.8em);
     margin: 40px 0 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(0,255,255,0.2);
+    border-bottom: 1px solid #333;
+    font-weight: 600;
   }
   
   .article-content h3 {
-    color: #00ffff;
+    color: #cccccc;
     font-size: clamp(1.2em, 2.5vw, 1.4em);
     margin: 30px 0 15px;
+    font-weight: 500;
   }
   
   .article-content p {
     margin: 15px 0;
     line-height: 1.8;
+    color: #d4d4d4;
   }
   
   .article-content ul,
@@ -137,18 +142,17 @@
   
   .article-content li {
     margin: 8px 0;
+    color: #cccccc;
   }
   
   .article-content a {
-    color: #00ffff;
+    color: #569cd6;
     text-decoration: none;
-    border-bottom: 1px solid rgba(0,255,255,0.3);
     transition: all 0.3s ease;
   }
   
   .article-content a:hover {
-    color: #fff;
-    border-bottom-color: #00ffff;
+    text-decoration: underline;
   }
   
   .article-content img {
@@ -157,51 +161,77 @@
     border-radius: 8px;
     margin: 20px 0;
     display: block;
-    box-shadow: 0 4px 15px rgba(0,255,255,0.3);
-    transition: all 0.3s ease;
-  }
-  
-  .article-content img:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 25px rgba(0,255,255,0.5);
   }
   
   .article-content blockquote {
-    border-left: 3px solid #00ffff;
+    border-left: 3px solid #569cd6;
     padding: 10px 20px;
     margin: 20px 0;
-    background: rgba(0,255,255,0.05);
+    background: rgba(86, 156, 214, 0.1);
     border-radius: 0 8px 8px 0;
   }
   
   .article-content code {
-    background: rgba(255,255,255,0.1);
+    background: #2d2d2d;
     padding: 2px 6px;
     border-radius: 4px;
-    font-family: 'Courier New', monospace;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 0.9em;
+    color: #d4d4d4;
   }
   
   .article-content pre {
-    background: rgba(0,0,0,0.5);
+    background: #252526;
     padding: 20px;
     border-radius: 8px;
     overflow-x: auto;
     margin: 20px 0;
+    border: 1px solid #333;
   }
   
   .article-content pre code {
     background: none;
     padding: 0;
+    color: #d4d4d4;
   }
   
-  @media (max-width: 768px) {
+  .article-content pre code .keyword {
+    color: #569cd6;
+  }
+  
+  .article-content pre code .string {
+    color: #ce9178;
+  }
+  
+  .article-content pre code .comment {
+    color: #6a9955;
+  }
+  
+  .article-content pre code .number {
+    color: #b5cea8;
+  }
+  
+  .article-content pre code .function {
+    color: #dcdcaa;
+  }
+  
+  .article-content pre code .operator {
+    color: #d4d4d4;
+  }
+  
+  @media (max-width: 1024px) {
     .article-content h2 {
       font-size: 1.5em;
     }
     
     .article-content h3 {
       font-size: 1.2em;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .article-content {
+      font-size: 16px;
     }
   }
 </style>
