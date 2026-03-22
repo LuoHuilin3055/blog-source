@@ -196,10 +196,8 @@
             link.classList.remove('active');
             if (link.getAttribute('href') === '#' + id) {
               link.classList.add('active');
-              // 自动滚动到当前活跃的链接
-              if (!tocCollapsed) {
-                link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              }
+              // 移除 scrollIntoView 避免页面反弹
+              // link.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
           });
         }
