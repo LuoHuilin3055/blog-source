@@ -18,9 +18,9 @@ cd public
 
 if [ ! -d ".git" ]; then
     git init
-    git remote add origin git@github.com:LuoHuilin3055/LuoHuilin3055.github.io.git
+    git remote add origin git@github.com:LuoHuilin3055/NGC2237.github.io.git
 else
-    git remote set-url origin git@github.com:LuoHuilin3055/LuoHuilin3055.github.io.git
+    git remote set-url origin git@github.com:LuoHuilin3055/NGC2237.github.io.git
 fi
 
 git add .
@@ -30,4 +30,4 @@ git push -f origin master
 cd ..
 
 echo -e "\033[0;32m✅ 部署完成！\033[0m"
-echo "🌐 访问: https://LuoHuilin3055.github.io"
+echo "🌐 访问: https://LuoHuilin3055.github.io/NGC2237.github.io/"

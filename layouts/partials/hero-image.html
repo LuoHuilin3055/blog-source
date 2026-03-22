@@ -1,4 +1,4 @@
-{{ $image := "/images/background.jpg" }}
+{{ $image := "images/background.jpg" | absURL }}
 {{ $title := .Site.Params.site_title | default "NGC 2237" }}
 {{ $description := .Site.Params.description }}
 

@@ -3,7 +3,7 @@
 {{ end }}
 
 {{ define "main" }}
-  {{ $bgImage := .Params.background | default "/images/background.jpg" }}
+  {{ $bgImage := .Params.background | default "images/background.jpg" | absURL }}
   
   <div style="
     background-image: url('{{ $bgImage }}');
