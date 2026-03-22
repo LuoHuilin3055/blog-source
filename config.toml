@@ -34,5 +34,5 @@ theme = "theme2"
     lineNos = true
     lineNumbersInTable = false
     noClasses = false
-    style = "monokai"
+    style = "none"
     tabWidth = 4
