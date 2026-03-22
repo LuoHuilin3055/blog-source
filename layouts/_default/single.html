@@ -5,76 +5,94 @@
 {{ end }}
 
 {{ define "main" }}
-  {{- $related_content := .RegularPages.Related . -}}
-  {{- $needs_aside := or .Params.toc $related_content -}}
-  {{ $page := .}}
-  {{ $section := .Site.GetPage "section" .Section }}
-
-  {{/* Calculate a unique class for this post */}}
-  {{- $post_class := "" -}}
-  {{- with .File -}}
-    {{- $post_class = printf "page-%s" .ContentBaseName -}}
-  {{- end -}}
-
-  <article class="{{ $post_class }} flex-l {{ if $needs_aside }}mw8{{ else }}mw7{{ end }} center ph3 flex-wrap justify-between" style="background-color: #000000; color: #ffffff;">
-    <header class="mt4 w-100">
-      <aside class="instapaper_ignoref b helvetica tracked ttu" style="color: #00ffff;">
-        {{ .CurrentSection.Title }}
-      </aside>
-      <h1 class="f1 athelas mt3 mb1" style="color: #00ffff;">
-        {{- .Title -}}
-      </h1>
-      {{ with .Params.author | compare.Default .Site.Params.author }}
-      <p class="tracked" style="color: #cccccc;">
-        {{- if compare.Eq $page.Language "de" "en" "es" "fr" "it" "no" "pt" -}}
-          {{- lang.Translate "by" -}}
-        {{ end -}} <strong style="color: #ffffff;">
-        {{- if reflect.IsSlice . -}}
-            {{ collections.Delimit . ", " | transform.Markdownify }}
-        {{- else -}}
-            {{ . | transform.Markdownify }}
-        {{- end -}}
-        </strong>
-      </p>
-      {{ end }}
-      {{ if not .Date.IsZero }}
-      <time class="f6 mv4 dib tracked" {{ fmt.Printf `datetime="%s"` (.Date.Format "2006-01-02T15:04:05Z07:00") | safeHTMLAttr }} style="color: #cccccc;">
-        {{- .Date | time.Format (compare.Default "January 2, 2006" .Site.Params.date_format) -}}
-      </time>
-      {{end}}
-
-      {{ if (or (compare.Eq (.Param "show_reading_time") true) (compare.Eq $section.Params.show_reading_time true) )}}
-        {{ $readingTime := .ReadingTime }}
-        {{ with .Site.Params.reading_speed }}
-          {{ $readingTime = div (float $.WordCount) . }}
-          {{ $readingTime = math.Ceil $readingTime }}
-          {{ $readingTime = int $readingTime }}
+  {{ $bgImage := .Params.background | default "images/background.jpg" | absURL }}
+  {{ $coverImage := .Params.cover | default "" }}
+  
+  <div style="
+    background-image: url('{{ $bgImage }}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 120px 20px 60px;
+    background-color: #000000;
+    position: relative;
+  ">
+    <!-- 背景遮罩 -->
+    <div style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 0;
+    "></div>
+    
+    <div style="max-width: 1400px; margin: 0 auto; display: flex; gap: 40px; position: relative; z-index: 1;">
+      <!-- 文章内容 -->
+      <article style="flex: 1; background: rgba(0,0,0,0.9); border-radius: 15px; padding: 40px; border: 1px solid rgba(0,255,255,0.3); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: all 0.3s ease; transform: translateY(0);">
+        <!-- 封面图片 -->
+        {{ if $coverImage }}
+        <div style="
+          margin: -40px -40px 30px -40px;
+          position: relative;
+          overflow: hidden;
+          border-radius: 15px 15px 0 0;
+        ">
+          <img 
+            src="{{ $coverImage | absURL }}"
+            alt="{{ .Title }}"
+            loading="eager"
+            decoding="async"
+            style="
+              width: 100%;
+              height: auto;
+              max-height: 400px;
+              object-fit: cover;
+              display: block;
+              transition: transform 0.3s ease;
+            "
+          />
+          <!-- 渐变遮罩 -->
+          <div style="
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 100%);
+          "></div>
+        </div>
         {{ end }}
-        <span class="f6 mv4 dib tracked" style="color: #cccccc;"> - {{ lang.Translate "readingTime" $readingTime }} </span>
-        <span class="f6 mv4 dib tracked" style="color: #cccccc;"> - {{ lang.Translate "wordCount" .WordCount }} </span>
-      {{ end }}
-    </header>
-    <div class="nested-copy-line-height lh-copy {{ $.Param "post_content_classes"  | compare.Default "serif"}} f4 nested-links {{ $.Param "text_color" | compare.Default "mid-gray" }} {{ compare.Conditional (compare.Eq $.Site.Language.LanguageDirection "rtl") "pl4-l" "pr4-l" }} {{ if $needs_aside }}w-two-thirds-l{{ else }}w-100-l{{ end }}" style="color: #ffffff;">
-      {{- .Content -}}
-      {{- partials.Include "tags.html" . -}}
-      {{ if .Site.Config.Services.Disqus.Shortname }}
-      <div class="mt6 instapaper_ignoref">
-        {{ partials.Include "disqus.html" . }}
+        
+        <h1 style="color: #00ffff; font-size: clamp(2em, 5vw, 2.5em); margin: {{ if $coverImage }}-20px{{ else }}0{{ end }} 0 20px; text-shadow: 0 0 10px rgba(0,255,255,0.3); animation: fadeIn 0.8s ease;">{{ .Title }}</h1>
+        
+        <div style="color: #ccc; margin: 20px 0; display: flex; gap: 20px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <span>📅 {{ .Date.Format "2006-01-02" }}</span>
+          <span>📝 {{ .WordCount }} 字</span>
+          <span>⏱️ {{ .ReadingTime }} 分钟</span>
+        </div>
+        
+        <!-- 文章标签 -->
+        {{ partial "article-tags.html" . }}
+        
+        <div class="article-content" style="color: #fff; line-height: 1.8; margin-top: 30px;">
+          {{ .Content }}
+        </div>
+        
+        <!-- 文章底部标签和分享 -->
+        <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #333;">
+          {{ partial "article-footer.html" . }}
+        </div>
+      </article>
+      
+      <!-- 右侧目录栏 -->
+      <div style="flex-shrink: 0; width: 280px;">
+        {{ partial "enhanced-toc.html" . }}
       </div>
-      {{ end }}
-      {{ if .Site.Params.commentoEnable }}
-      <div class="mt6 instapaper_ignoref">
-        {{- partials.Include "commento.html" . -}}
-      </div>
-      {{ end }}
     </div>
-    {{- if $needs_aside -}}
-    <aside class="w-30-l mt6-l">
-      {{- partials.Include "menu-contextual.html" . -}}
-    </aside>
-    {{- end -}}
-
-  </article>
+  </div>
 {{ end }}
 
 {{ define "footer" }}
@@ -83,10 +101,15 @@
 
 {{ define "head" }}
 <style>
-  /* 自定义样式补充Ananke主题 */
-  .article-content {
-    color: #ffffff;
-    line-height: 1.8;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   .article-content h2 {
@@ -175,11 +198,10 @@
     background: rgba(0,255,255,0.05);
   }
   
-  /* 代码块样式 - 基于Ananke主题优化 */
-  pre {
-    background-color: #222;
-    color: #ddd;
-    padding: 1.5em;
+  /* 代码高亮样式 - 优化MD渲染 */
+  .article-content pre {
+    background: #1e1e1e;
+    padding: 0;
     border-radius: 8px;
     overflow-x: auto;
     margin: 20px 0;
@@ -188,17 +210,26 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   
-  pre code {
-    display: block;
-    padding: 0;
-    white-space: pre;
-    font-size: 0.875rem;
-    line-height: 2;
+  .article-content code {
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+  
+  .article-content pre code {
+    background: none;
+    padding: 0;
+  }
+  
+  /* 代码块整体样式 */
+  .article-content .chroma {
+    color: #d4d4d4;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    position: relative;
   }
   
   /* 复制按钮 */
-  pre::before {
+  .article-content .chroma::before {
     content: '📋';
     position: absolute;
     top: 10px;
@@ -213,9 +244,215 @@
     z-index: 10;
   }
   
-  pre:hover::before {
+  .article-content .chroma:hover::before {
     color: #00ffff;
     background: rgba(0,255,255,0.2);
+  }
+  
+  /* 代码内容 */
+  .article-content .chroma .code {
+    padding: 20px;
+  }
+  
+  /* 代码高亮颜色 - 优化效果 */
+  .article-content .chroma .k {
+    color: #ff79c6;
+  }
+  
+  .article-content .chroma .kc {
+    color: #ff79c6;
+  }
+  
+  .article-content .chroma .kd {
+    color: #ff79c6;
+  }
+  
+  .article-content .chroma .kn {
+    color: #ff79c6;
+  }
+  
+  .article-content .chroma .kp {
+    color: #ff79c6;
+  }
+  
+  .article-content .chroma .kr {
+    color: #ff79c6;
+  }
+  
+  .article-content .chroma .kt {
+    color: #8be9fd;
+  }
+  
+  .article-content .chroma .na {
+    color: #50fa7b;
+  }
+  
+  .article-content .chroma .nc {
+    color: #50fa7b;
+  }
+  
+  .article-content .chroma .no {
+    color: #bd93f9;
+  }
+  
+  .article-content .chroma .nd {
+    color: #50fa7b;
+  }
+  
+  .article-content .chroma .ni {
+    color: #d4d4d4;
+  }
+  
+  .article-content .chroma .ne {
+    color: #50fa7b;
+  }
+  
+  .article-content .chroma .nf {
+    color: #50fa7b;
+  }
+  
+  .article-content .chroma .nl {
+    color: #d4d4d4;
+  }
+  
+  .article-content .chroma .nn {
+    color: #d4d4d4;
+  }
+  
+  .article-content .chroma .nx {
+    color: #50fa7b;
+  }
+  
+  .article-content .chroma .py {
+    color: #d4d4d4;
+  }
+  
+  .article-content .chroma .nt {
+    color: #ff79c6;
+  }
+  
+  .article-content .chroma .nv {
+    color: #d4d4d4;
+  }
+  
+  .article-content .chroma .l {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .ld {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .s {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .sa {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .sb {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .sc {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .dl {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .sd {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .s2 {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .se {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .sh {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .si {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .sx {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .sr {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .s1 {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .ss {
+    color: #f1fa8c;
+  }
+  
+  .article-content .chroma .m {
+    color: #bd93f9;
+  }
+  
+  .article-content .chroma .mb {
+    color: #bd93f9;
+  }
+  
+  .article-content .chroma .mf {
+    color: #bd93f9;
+  }
+  
+  .article-content .chroma .mh {
+    color: #bd93f9;
+  }
+  
+  .article-content .chroma .mi {
+    color: #bd93f9;
+  }
+  
+  .article-content .chroma .mo {
+    color: #bd93f9;
+  }
+  
+  .article-content .chroma .c {
+    color: #6272a4;
+  }
+  
+  .article-content .chroma .ch {
+    color: #6272a4;
+  }
+  
+  .article-content .chroma .cm {
+    color: #6272a4;
+  }
+  
+  .article-content .chroma .c1 {
+    color: #6272a4;
+  }
+  
+  .article-content .chroma .cs {
+    color: #6272a4;
+  }
+  
+  .article-content .chroma .o {
+    color: #ff79c6;
+  }
+  
+  .article-content .chroma .ow {
+    color: #ff79c6;
+  }
+  
+  .article-content .chroma .p {
+    color: #d4d4d4;
   }
   
   @media (max-width: 768px) {
@@ -231,7 +468,7 @@
 <script>
   // 代码块复制功能
   document.addEventListener('DOMContentLoaded', function() {
-    const codeBlocks = document.querySelectorAll('pre');
+    const codeBlocks = document.querySelectorAll('.article-content .chroma');
     codeBlocks.forEach(block => {
       block.addEventListener('click', function(e) {
         if (e.target === this || e.target === this.querySelector('code')) {

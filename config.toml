@@ -40,7 +40,7 @@ theme = "theme2"
     lineNos = false
     lineNumbersInTable = false
     noClasses = false
-    style = "monokai"
+    style = "none"
     tabWidth = 4
   [markup.tableOfContents]
     startLevel = 2
