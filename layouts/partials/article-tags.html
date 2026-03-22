@@ -1,0 +1,25 @@
+{{ if .Params.tags }}
+<div style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 8px;">
+  {{ range .Params.tags }}
+    <a href="{{ "/tags/" | absURL }}{{ . | urlize }}" 
+       style="
+         display: inline-flex;
+         align-items: center;
+         gap: 4px;
+         padding: 4px 12px;
+         background: rgba(0, 255, 255, 0.1);
+         border: 1px solid rgba(0, 255, 255, 0.3);
+         border-radius: 15px;
+         color: #00ffff;
+         font-size: 0.85em;
+         text-decoration: none;
+         transition: all 0.3s ease;
+       "
+       onmouseover="this.style.background='rgba(0, 255, 255, 0.3)'; this.style.borderColor='#00ffff'"
+       onmouseout="this.style.background='rgba(0, 255, 255, 0.1)'; this.style.borderColor='rgba(0, 255, 255, 0.3)'">
+      <span>🏷️</span>
+      <span>{{ . }}</span>
+    </a>
+  {{ end }}
+</div>
+{{ end }}

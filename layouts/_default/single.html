@@ -11,19 +11,28 @@
     background-position: center;
     background-attachment: scroll;
     min-height: 100vh;
-    padding: 120px 20px 60px;  /* 顶部内边距增加，避免与导航按钮重合 */
+    padding: 120px 20px 60px;
     background-color: #000000;
   ">
     <div style="max-width: 1400px; margin: 0 auto; display: flex; gap: 40px;">
       <!-- 文章内容 -->
       <article style="flex: 1; background: rgba(0,0,0,0.85); border-radius: 15px; padding: 40px; border: 1px solid #00ffff;">
         <h1 style="color: #00ffff; font-size: 2.5em;">{{ .Title }}</h1>
-        <div style="color: #ccc; margin: 20px 0; display: flex; gap: 20px;">
+        <div style="color: #ccc; margin: 20px 0; display: flex; gap: 20px; flex-wrap: wrap;">
           <span>📅 {{ .Date.Format "2006-01-02" }}</span>
           <span>📝 {{ .WordCount }} 字</span>
           <span>⏱️ {{ .ReadingTime }} 分钟</span>
         </div>
-        <div style="color: #fff; line-height: 1.8;">{{ .Content }}</div>
+        
+        <!-- 文章标签 -->
+        {{ partial "article-tags.html" . }}
+        
+        <div style="color: #fff; line-height: 1.8; margin-top: 30px;">{{ .Content }}</div>
+        
+        <!-- 文章底部标签和分享 -->
+        <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #333;">
+          {{ partial "article-footer.html" . }}
+        </div>
       </article>
       
       <!-- 右侧目录栏 -->
@@ -31,7 +40,7 @@
       <div style="
         width: 280px;
         position: sticky;
-        top: 100px;  /* 距离顶部100px，不会跟着滚动到顶部 */
+        top: 100px;
         background: rgba(0,0,0,0.8);
         border-radius: 12px;
         padding: 20px;

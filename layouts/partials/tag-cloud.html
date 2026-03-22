@@ -1,0 +1,31 @@
+{{ $tags := .Site.Taxonomies.tags }}
+{{ if $tags }}
+<div style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+  <h2 style="font-size: 2em; color: #00ffff; margin-bottom: 20px;">🏷️ 标签云</h2>
+  <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+    {{ range $name, $taxonomy := $tags }}
+      {{ $count := len $taxonomy.Pages }}
+      {{ $fontSize := add 0.9 (mul 0.15 (math.Log $count)) }}
+      <a href="{{ .Page.RelPermalink | absURL }}" 
+         style="
+           font-size: {{ $fontSize }}em;
+           padding: 8px 16px;
+           background: linear-gradient(135deg, #111, #1a1a1a);
+           border: 1px solid #333;
+           border-radius: 25px;
+           color: #00ffff;
+           text-decoration: none;
+           transition: all 0.3s ease;
+           display: inline-flex;
+           align-items: center;
+           gap: 6px;
+         "
+         onmouseover="this.style.background='linear-gradient(135deg, #00ffff, #0066ff)'; this.style.color='#000'; this.style.borderColor='#00ffff'; this.style.transform='scale(1.05)'"
+         onmouseout="this.style.background='linear-gradient(135deg, #111, #1a1a1a)'; this.style.color='#00ffff'; this.style.borderColor='#333'; this.style.transform='scale(1)'">
+        <span>{{ $name }}</span>
+        <span style="background: rgba(0,255,255,0.2); padding: 2px 8px; border-radius: 12px; font-size: 0.75em;">{{ $count }}</span>
+      </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
