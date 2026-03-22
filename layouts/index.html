@@ -1,0 +1,67 @@
+{{ define "header" }}
+  {{ partial "site-header.html" . }}
+{{ end }}
+
+{{ define "main" }}
+  {{ partial "hero-image.html" . }}
+
+  {{ with .Site.Params.home_text }}
+  <div style="
+    text-align: center;
+    font-size: 2.2em;
+    color: #00ffff;
+    margin: 60px auto 40px;
+    max-width: 900px;
+    padding: 0 30px 35px;
+    font-style: italic;
+    line-height: 1.6;
+    border-bottom: 3px solid #00ffff;
+    width: 80%;
+  ">
+    "{{ . }}"
+  </div>
+  {{ end }}
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; background-color: #000000;">
+    <h2 style="font-size: 2em; color: #00ffff; margin-bottom: 30px;">📝 最新文章</h2>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center;">
+      {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts") }}
+      {{ range $paginator.Pages }}
+      <div style="
+        width: 320px;
+        background: #111;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,255,255,0.2);
+        padding: 25px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #333;
+      " onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,255,255,0.4)'; this.style.border='1px solid #00ffff';"
+         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.2)'; this.style.border='1px solid #333';">
+        <h2 style="font-size: 1.5em; margin: 0 0 10px;">
+          <a href="{{ .RelPermalink }}" style="color: #fff; text-decoration: none;">{{ .Title }}</a>
+        </h2>
+        <div style="color: #888; font-size: 0.85em; margin-bottom: 15px;">
+          {{ .Date.Format "2006-01-02" }} | {{ .ReadingTime }} 分钟
+        </div>
+        <div style="color: #ccc; line-height: 1.6; margin-bottom: 20px;">
+          {{ .Summary | plainify | truncate 100 }}
+        </div>
+        <a href="{{ .RelPermalink }}" style="
+          display: inline-block;
+          background: #00ffff;
+          color: #000;
+          padding: 8px 20px;
+          border-radius: 25px;
+          text-decoration: none;
+          font-weight: bold;
+        ">阅读全文 →</a>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+{{ end }}
+
+{{ define "footer" }}
+  {{ partial "site-footer.html" . }}
+{{ end }}

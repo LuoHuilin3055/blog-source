@@ -1,0 +1,59 @@
+{{ define "header" }}
+  {{ partial "site-header.html" . }}
+{{ end }}
+
+{{ define "main" }}
+  {{ $bgImage := .Params.background | default "/images/background.jpg" }}
+  
+  <div style="
+    background-image: url('{{ $bgImage }}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: scroll;
+    min-height: 100vh;
+    padding: 120px 20px 60px;  /* 顶部内边距增加，避免与导航按钮重合 */
+    background-color: #000000;
+  ">
+    <div style="max-width: 1400px; margin: 0 auto; display: flex; gap: 40px;">
+      <!-- 文章内容 -->
+      <article style="flex: 1; background: rgba(0,0,0,0.85); border-radius: 15px; padding: 40px; border: 1px solid #00ffff;">
+        <h1 style="color: #00ffff; font-size: 2.5em;">{{ .Title }}</h1>
+        <div style="color: #ccc; margin: 20px 0; display: flex; gap: 20px;">
+          <span>📅 {{ .Date.Format "2006-01-02" }}</span>
+          <span>📝 {{ .WordCount }} 字</span>
+          <span>⏱️ {{ .ReadingTime }} 分钟</span>
+        </div>
+        <div style="color: #fff; line-height: 1.8;">{{ .Content }}</div>
+      </article>
+      
+      <!-- 右侧目录栏 -->
+      {{ if .TableOfContents }}
+      <div style="
+        width: 280px;
+        position: sticky;
+        top: 100px;  /* 距离顶部100px，不会跟着滚动到顶部 */
+        background: rgba(0,0,0,0.8);
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #00ffff;
+        max-height: 70vh;
+        overflow-y: auto;
+      ">
+        <h3 style="color: #00ffff; margin-top: 0; margin-bottom: 15px;">📋 目录</h3>
+        <style>
+          .toc ul { list-style: none; padding-left: 0; margin: 0; }
+          .toc li { margin: 10px 0; }
+          .toc a { color: #fff; text-decoration: none; transition: color 0.3s; }
+          .toc a:hover { color: #00ffff; }
+          .toc ul ul { padding-left: 15px; margin-top: 5px; }
+        </style>
+        <div class="toc">{{ .TableOfContents }}</div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+{{ end }}
+
+{{ define "footer" }}
+  {{ partial "site-footer.html" . }}
+{{ end }}

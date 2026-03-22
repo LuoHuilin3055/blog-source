@@ -1,0 +1,26 @@
+baseURL = "https://ngc2237.github.io/"
+languageCode = "zh-cn"
+title = "NGC 2237's Blog"
+theme = "theme2"
+
+[params]
+  site_title = "NGC 2237"
+  description = "欢迎来到NGC_2237的博客"
+  author = "NGC 2237"
+  featured_image = "/images/background.jpg"
+  home_text = "何时葡萄会熟透，你要静候再静候"
+  custom_404 = true
+
+[menu]
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 10
+  [[menu.main]]
+    name = "Articles"
+    url = "/posts/"
+    weight = 20
+  [[menu.main]]
+    name = "Contact"
+    url = "/contact/"
+    weight = 30

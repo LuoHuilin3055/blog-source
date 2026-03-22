@@ -1,0 +1,48 @@
+{{ define "header" }}
+  {{ partial "site-header.html" . }}
+{{ end }}
+
+{{ define "main" }}
+<div style="
+  background-color: #000000;
+  min-height: 100vh;
+  padding: 120px 20px 60px;
+">
+  <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+    <h1 style="
+      font-size: 3.5em;
+      color: #00ffff;
+      margin: 0;
+      text-shadow: 0 0 20px rgba(0,255,255,0.5);
+    ">{{ .Title }}</h1>
+    <div style="
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #00ffff, transparent);
+      margin: 20px auto 40px;
+    "></div>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+      {{ range .Data.Terms.Alphabetical }}
+      <a href="{{ .Page.RelPermalink }}" style="
+        display: inline-block;
+        background: #111;
+        color: #fff;
+        text-decoration: none;
+        padding: 12px 25px;
+        border-radius: 30px;
+        border: 1px solid #333;
+        transition: all 0.3s;
+      " onmouseover="this.style.background='#00ffff'; this.style.color='#000'; this.style.borderColor='#00ffff';"
+         onmouseout="this.style.background='#111'; this.style.color='#fff'; this.style.borderColor='#333';">
+        {{ .Page.Title }} <span style="color: #00ffff;">({{ .Count }})</span>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}
+
+{{ define "footer" }}
+  {{ partial "site-footer.html" . }}
+{{ end }}

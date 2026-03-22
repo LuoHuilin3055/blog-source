@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="{{ site.LanguageCode }}">
+<head>
+    <meta charset="utf-8">
+    <title>{{ .Title }} | {{ .Site.Title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: #ffffff;
+            width: 100%;
+        }
+    </style>
+    {{ partial "custom-head.html" . }}
+</head>
+<body style="background-color: #000000; margin: 0; padding: 0;">
+    {{ block "header" . }}{{ partial "site-header.html" . }}{{ end }}
+    <main style="background-color: #000000;">
+        {{ block "main" . }}{{ end }}
+    </main>
+    {{ block "footer" . }}{{ partial "site-footer.html" . }}{{ end }}
+</body>
+</html>
