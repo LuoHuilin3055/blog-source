@@ -5,6 +5,7 @@ draft: false
 tags:
   - 随笔
   - 博客
+cover: "images/background.jpg"
 ---
 
 # 欢迎来到我的博客

@@ -3,128 +3,87 @@
 {{ end }}
 
 {{ define "main" }}
-<div style="
-  background-color: #000000;
-  min-height: 100vh;
-  padding: 120px 20px 60px;
-">
-  <div style="max-width: 1200px; margin: 0 auto;">
-    <!-- 页面标题 -->
-    <div style="text-align: center; margin-bottom: 60px;">
-      <h1 style="
-        font-size: 3.5em;
-        color: #00ffff;
-        margin: 0;
-        text-shadow: 0 0 20px rgba(0,255,255,0.5);
-        letter-spacing: 2px;
-      ">{{ .Title }}</h1>
-      <div style="
-        width: 80px;
-        height: 3px;
-        background: linear-gradient(90deg, #00ffff, transparent);
-        margin: 20px auto 0;
-      "></div>
-    </div>
-    
-    <!-- 文章卡片网格 -->
+  {{ $bgImage := "images/background.jpg" | absURL }}
+  
+  <style>
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  
+  <div style="
+    background-image: url('{{ $bgImage }}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 120px 20px 60px;
+    position: relative;
+  ">
+    <!-- 背景遮罩 -->
     <div style="
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 30px;
-    ">
-      {{ range .Pages }}
-      <article style="
-        background: linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
-        border-radius: 16px;
-        border: 1px solid #222;
-        overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        cursor: pointer;
-      " onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='#00ffff'; this.style.boxShadow='0 20px 40px rgba(0,255,255,0.2)';"
-         onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#222'; this.style.boxShadow='none';">
-        
-        <!-- 装饰条 -->
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 0;
+    "></div>
+    
+    <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+      <!-- 页面标题 -->
+      <div style="text-align: center; margin-bottom: 60px;">
+        <h1 style="
+          font-size: clamp(2.5em, 6vw, 3.5em);
+          color: #00ffff;
+          margin: 0;
+          text-shadow: 0 0 20px rgba(0,255,255,0.5);
+          letter-spacing: 2px;
+          animation: fadeInDown 0.8s ease;
+        ">{{ .Title }}</h1>
         <div style="
-          height: 4px;
-          background: linear-gradient(90deg, #00ffff, #0066ff);
-          width: 100%;
+          width: 80px;
+          height: 3px;
+          background: linear-gradient(90deg, #00ffff, transparent);
+          margin: 20px auto 0;
+          animation: fadeInDown 0.8s ease 0.2s both;
         "></div>
-        
-        <div style="padding: 30px;">
-          <!-- 文章标题 -->
-          <h2 style="
-            font-size: 1.8em;
-            margin: 0 0 15px;
-            line-height: 1.3;
-          ">
-            <a href="{{ .RelPermalink }}" style="
-              color: #fff;
-              text-decoration: none;
-              transition: color 0.3s;
-            " onmouseover="this.style.color='#00ffff'" onmouseout="this.style.color='#fff'">
-              {{ .Title }}
-            </a>
-          </h2>
-          
-          <!-- 文章元数据 -->
-          <div style="
-            display: flex;
-            gap: 20px;
-            color: #888;
-            font-size: 0.85em;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-          ">
-            <span>📅 {{ .Date.Format "2006-01-02" }}</span>
-            <span>📝 {{ .WordCount }} 字</span>
-            <span>⏱️ {{ .ReadingTime }} 分钟阅读</span>
-          </div>
-          
-          <!-- 文章摘要 -->
-          <div style="
-            color: #aaa;
-            line-height: 1.7;
-            margin-bottom: 25px;
-            font-size: 0.95em;
-          ">
-            {{ .Summary | plainify | truncate 120 }}
-          </div>
-          
-          <!-- 阅读更多按钮 -->
-          <a href="{{ .RelPermalink }}" style="
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: transparent;
-            color: #00ffff;
-            text-decoration: none;
-            font-size: 0.9em;
-            font-weight: 500;
-            padding: 8px 0;
-            border-bottom: 2px solid #00ffff;
-            transition: all 0.3s;
-          " onmouseover="this.style.gap='12px'; this.style.color='#fff';"
-             onmouseout="this.style.gap='8px'; this.style.color='#00ffff';">
-            阅读文章
-            <span style="font-size: 1.2em;">→</span>
-          </a>
-        </div>
-      </article>
+      </div>
+      
+      <!-- 文章卡片网格 -->
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+      ">
+        {{ range .Pages }}
+          {{ partial "article-card.html" . }}
+        {{ end }}
+      </div>
+      
+      <!-- 如果没有文章 -->
+      {{ if eq (len .Pages) 0 }}
+      <div style="
+        text-align: center;
+        padding: 80px 20px;
+        color: #666;
+        background: rgba(0,0,0,0.5);
+        border-radius: 16px;
+        border: 1px solid #333;
+      ">
+        <p style="font-size: 1.2em;">暂无文章，敬请期待...</p>
+      </div>
       {{ end }}
     </div>
-    
-    <!-- 如果没有文章 -->
-    {{ if eq (len .Pages) 0 }}
-    <div style="
-      text-align: center;
-      padding: 80px 20px;
-      color: #666;
-    ">
-      <p style="font-size: 1.2em;">暂无文章，敬请期待...</p>
-    </div>
-    {{ end }}
   </div>
-</div>
 {{ end }}
 
 {{ define "footer" }}
