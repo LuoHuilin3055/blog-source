@@ -2,7 +2,7 @@
 
 echo -e "\033[0;32m🚀 开始部署...\033[0m"
 
-# 1. 推送源文件
+# 1. 推送源文件到 LuoHuilin3055 的源仓库
 echo "📦 推送源文件..."
 git add .
 git commit -m "更新源文件: $(date '+%Y-%m-%d %H:%M:%S')"
@@ -12,13 +12,13 @@ git push origin master
 echo "🏗️ 生成静态文件..."
 hugo -t theme2
 
-# 3. 部署到 GitHub Pages
+# 3. 部署到 ngc2237.github.io 仓库
 echo "☁️ 部署到 GitHub Pages..."
 cd public
 
 if [ ! -d ".git" ]; then
     git init
-    git remote add origin git@github.com:LuoHuilin3055/LuoHuilin3055.github.io.git
+    git remote add origin https://github.com/LuoHuilin3055/ngc2237.github.io.git
 fi
 
 git add .
@@ -28,4 +28,4 @@ git push -f origin master
 cd ..
 
 echo -e "\033[0;32m✅ 部署完成！\033[0m"
-echo "🌐 访问: https://LuoHuilin3055.github.io"
+echo "🌐 访问: https://ngc2237.github.io"
