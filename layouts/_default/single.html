@@ -176,15 +176,16 @@
     border-radius: 0 8px 8px 0;
   }
   
-  /* 代码高亮样式 - 匹配Obsidian效果 */
+  /* 代码高亮样式 - 匹配图一效果 */
   .article-content pre {
-    background: #1a1a1a;
+    background: #1e1e1e;
     padding: 0;
     border-radius: 8px;
     overflow-x: auto;
     margin: 20px 0;
     border: 1px solid #333;
     position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   
   .article-content code {
@@ -199,24 +200,10 @@
   
   /* 代码块整体样式 */
   .article-content .chroma {
-    color: #e6e6e6;
-    background-color: #1a1a1a;
+    color: #d4d4d4;
+    background-color: #1e1e1e;
     border-radius: 8px;
     position: relative;
-  }
-  
-  /* 语言标签 */
-  .article-content .chroma::after {
-    content: attr(data-language);
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    color: #888;
-    font-size: 0.8em;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    background: rgba(255,255,255,0.1);
-    padding: 2px 8px;
-    border-radius: 4px;
   }
   
   /* 复制按钮 */
@@ -224,26 +211,28 @@
     content: '📋';
     position: absolute;
     top: 10px;
-    right: 80px;
+    right: 15px;
     color: #888;
     font-size: 0.9em;
     cursor: pointer;
-    padding: 2px 8px;
+    padding: 4px 8px;
     border-radius: 4px;
+    background: rgba(255,255,255,0.1);
     transition: all 0.3s ease;
+    z-index: 10;
   }
   
   .article-content .chroma:hover::before {
     color: #00ffff;
-    background: rgba(0,255,255,0.1);
+    background: rgba(0,255,255,0.2);
   }
   
   /* 代码内容 */
   .article-content .chroma .code {
-    padding: 15px 15px;
+    padding: 20px;
   }
   
-  /* 代码高亮颜色 - 匹配Obsidian效果 */
+  /* 代码高亮颜色 - 匹配图一效果 */
   .article-content .chroma .k {
     color: #ff79c6;
   }
@@ -289,7 +278,7 @@
   }
   
   .article-content .chroma .ni {
-    color: #e6e6e6;
+    color: #d4d4d4;
   }
   
   .article-content .chroma .ne {
@@ -301,11 +290,11 @@
   }
   
   .article-content .chroma .nl {
-    color: #e6e6e6;
+    color: #d4d4d4;
   }
   
   .article-content .chroma .nn {
-    color: #e6e6e6;
+    color: #d4d4d4;
   }
   
   .article-content .chroma .nx {
@@ -313,7 +302,7 @@
   }
   
   .article-content .chroma .py {
-    color: #e6e6e6;
+    color: #d4d4d4;
   }
   
   .article-content .chroma .nt {
@@ -321,7 +310,7 @@
   }
   
   .article-content .chroma .nv {
-    color: #f8f8f2;
+    color: #d4d4d4;
   }
   
   .article-content .chroma .l {
@@ -441,7 +430,7 @@
   }
   
   .article-content .chroma .p {
-    color: #e6e6e6;
+    color: #d4d4d4;
   }
   
   @media (max-width: 768px) {
