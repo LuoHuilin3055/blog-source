@@ -176,7 +176,29 @@
     border-radius: 0 8px 8px 0;
   }
   
-  /* 代码高亮样式 - 匹配图一效果 */
+  .article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .article-content th {
+    background: rgba(0,255,255,0.1);
+    padding: 12px;
+    text-align: left;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .article-content td {
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .article-content tr:hover {
+    background: rgba(0,255,255,0.05);
+  }
+  
+  /* 代码高亮样式 - 优化MD渲染 */
   .article-content pre {
     background: #1e1e1e;
     padding: 0;
@@ -232,7 +254,7 @@
     padding: 20px;
   }
   
-  /* 代码高亮颜色 - 匹配图一效果 */
+  /* 代码高亮颜色 - 优化效果 */
   .article-content .chroma .k {
     color: #ff79c6;
   }
@@ -443,4 +465,26 @@
     }
   }
 </style>
+<script>
+  // 代码块复制功能
+  document.addEventListener('DOMContentLoaded', function() {
+    const codeBlocks = document.querySelectorAll('.article-content .chroma');
+    codeBlocks.forEach(block => {
+      block.addEventListener('click', function(e) {
+        if (e.target === this || e.target === this.querySelector('code')) {
+          const code = this.querySelector('code').textContent;
+          navigator.clipboard.writeText(code).then(() => {
+            const originalContent = this.style.content;
+            this.style.content = '✅';
+            setTimeout(() => {
+              this.style.content = '📋';
+            }, 2000);
+          }).catch(err => {
+            console.error('复制失败:', err);
+          });
+        }
+      });
+    });
+  });
+</script>
 {{ end }}
