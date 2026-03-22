@@ -26,6 +26,12 @@ theme = "theme2"
     weight = 30
 
 [markup]
+  defaultMarkdownHandler = "goldmark"
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+      hardWraps = false
+      xHTML = false
   [markup.highlight]
     codeFences = true
     guessSyntax = true
@@ -36,3 +42,7 @@ theme = "theme2"
     noClasses = false
     style = "none"
     tabWidth = 4
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 6
+    ordered = false
