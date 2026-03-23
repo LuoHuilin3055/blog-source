@@ -65,6 +65,7 @@
     {{ .TableOfContents }}
   </div>
 </div>
+{{ end }}
 
 <!-- 回顶按钮 -->
 <button 
@@ -239,46 +240,48 @@
   
   // 高亮当前章节
   document.addEventListener('DOMContentLoaded', function() {
-    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    const tocLinks = document.querySelectorAll('.enhanced-toc a');
+    // 回顶按钮显示/隐藏逻辑
     const backToTop = document.getElementById('back-to-top');
-    
-    if (headings.length === 0 || tocLinks.length === 0) return;
-    
-    const observerOptions = {
-      root: null,
-      rootMargin: '-10% 0px -80% 0px',
-      threshold: 0
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          tocLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '#' + id) {
-              link.classList.add('active');
-            }
-          });
+    if (backToTop) {
+      window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+          backToTop.classList.add('show');
+        } else {
+          backToTop.classList.remove('show');
         }
       });
-    }, observerOptions);
+    }
     
-    headings.forEach(heading => {
-      if (heading.getAttribute('id')) {
-        observer.observe(heading);
-      }
-    });
+    // 目录高亮逻辑
+    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    const tocLinks = document.querySelectorAll('.enhanced-toc a');
     
-    // 回顶按钮显示/隐藏逻辑
-    window.addEventListener('scroll', function() {
-      if (window.pageYOffset > 300) {
-        backToTop.classList.add('show');
-      } else {
-        backToTop.classList.remove('show');
-      }
-    });
+    if (headings.length > 0 && tocLinks.length > 0) {
+      const observerOptions = {
+        root: null,
+        rootMargin: '-10% 0px -80% 0px',
+        threshold: 0
+      };
+      
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            tocLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === '#' + id) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }, observerOptions);
+      
+      headings.forEach(heading => {
+        if (heading.getAttribute('id')) {
+          observer.observe(heading);
+        }
+      });
+    }
   });
 </script>
-{{ end }}
