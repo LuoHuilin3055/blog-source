@@ -23,22 +23,32 @@
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(0,255,255,0.2);
   ">
-    <h3 style="color: #00ffff; margin: 0; font-size: 1.1em;">📋 目录</h3>
+    <h3 style="color: #00ffff; margin: 0; font-size: 1.1em; display: flex; align-items: center; gap: 8px;">
+      <span style="font-size: 1.2em;">📋</span>
+      <span>目录</span>
+    </h3>
     <button 
       onclick="toggleTOC()"
       style="
-        background: transparent;
-        border: 1px solid rgba(0,255,255,0.3);
+        background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,255,255,0.05));
+        border: 1px solid rgba(0,255,255,0.4);
         color: #00ffff;
-        padding: 4px 8px;
-        border-radius: 5px;
+        padding: 6px 12px;
+        border-radius: 8px;
         cursor: pointer;
         font-size: 0.85em;
         transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,255,255,0.1);
+        backdrop-filter: blur(5px);
+        position: relative;
+        overflow: hidden;
       "
-      onmouseover="this.style.background='rgba(0,255,255,0.2)'"
-      onmouseout="this.style.background='transparent'">
-      收起
+      onmouseover="this.style.background='linear-gradient(135deg, rgba(0,255,255,0.2), rgba(0,255,255,0.1))'; this.style.borderColor='#00ffff'; this.style.boxShadow='0 4px 12px rgba(0,255,255,0.3)'; this.style.transform='translateY(-2px)'"
+      onmouseout="this.style.background='linear-gradient(135deg, rgba(0,255,255,0.1), rgba(0,255,255,0.05))'; this.style.borderColor='rgba(0,255,255,0.4)'; this.style.boxShadow='0 2px 8px rgba(0,255,255,0.1)'; this.style.transform='translateY(0)'">
+      <span style="display: flex; align-items: center; gap: 6px;">
+        <span style="font-size: 1.1em;">📋</span>
+        <span>收起</span>
+      </span>
     </button>
   </div>
   
@@ -160,16 +170,17 @@
   
   function toggleTOC() {
     const tocContent = document.getElementById('toc-content');
-    const button = event.target;
+    const button = event.target.closest('button');
+    const buttonText = button.querySelector('span span:last-child');
     
     if (tocCollapsed) {
       tocContent.style.maxHeight = '1000px';
       tocContent.style.opacity = '1';
-      button.textContent = '收起';
+      buttonText.textContent = '收起';
     } else {
       tocContent.style.maxHeight = '0';
       tocContent.style.opacity = '0';
-      button.textContent = '展开';
+      buttonText.textContent = '展开';
     }
     
     tocCollapsed = !tocCollapsed;
