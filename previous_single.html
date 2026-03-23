@@ -1,4 +1,4 @@
-{{ define "title" }}{{ .Title }} | {{ .Site.Title }}{{ end }}
+﻿{{ define "title" }}{{ .Title }} | {{ .Site.Title }}{{ end }}
 
 {{ define "header" }}
   {{ partial "site-header.html" . }}
@@ -18,7 +18,7 @@
     background-color: #000000;
     position: relative;
   ">
-    <!-- 背景遮罩 -->
+    <!-- 鑳屾櫙閬僵 -->
     <div style="
       position: absolute;
       top: 0;
@@ -30,9 +30,9 @@
     "></div>
     
     <div style="max-width: 1400px; margin: 0 auto; display: flex; gap: 40px; position: relative; z-index: 1;">
-      <!-- 文章内容 -->
+      <!-- 鏂囩珷鍐呭 -->
       <article style="flex: 1; background: rgba(0,0,0,0.9); border-radius: 15px; padding: 40px; border: 1px solid rgba(0,255,255,0.3); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: all 0.3s ease; transform: translateY(0);">
-        <!-- 封面图片 -->
+        <!-- 灏侀潰鍥剧墖 -->
         {{ if $coverImage }}
         <div style="
           margin: -40px -40px 30px -40px;
@@ -54,7 +54,7 @@
               transition: transform 0.3s ease;
             "
           />
-          <!-- 渐变遮罩 -->
+          <!-- 娓愬彉閬僵 -->
           <div style="
             position: absolute;
             bottom: 0;
@@ -69,25 +69,25 @@
         <h1 style="color: #00ffff; font-size: clamp(2em, 5vw, 2.5em); margin: {{ if $coverImage }}-20px{{ else }}0{{ end }} 0 20px; text-shadow: 0 0 10px rgba(0,255,255,0.3); animation: fadeIn 0.8s ease;">{{ .Title }}</h1>
         
         <div style="color: #ccc; margin: 20px 0; display: flex; gap: 20px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-          <span>📅 {{ .Date.Format "2006-01-02" }}</span>
-          <span>📝 {{ .WordCount }} 字</span>
-          <span>⏱️ {{ .ReadingTime }} 分钟</span>
+          <span>馃搮 {{ .Date.Format "2006-01-02" }}</span>
+          <span>馃摑 {{ .WordCount }} 瀛?/span>
+          <span>鈴憋笍 {{ .ReadingTime }} 鍒嗛挓</span>
         </div>
         
-        <!-- 文章标签 -->
+        <!-- 鏂囩珷鏍囩 -->
         {{ partial "article-tags.html" . }}
         
         <div class="article-content" style="color: #fff; line-height: 1.8; margin-top: 30px;">
           {{ .Content }}
         </div>
         
-        <!-- 文章底部标签和分享 -->
+        <!-- 鏂囩珷搴曢儴鏍囩鍜屽垎浜?-->
         <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #333;">
           {{ partial "article-footer.html" . }}
         </div>
       </article>
       
-      <!-- 右侧目录栏 -->
+      <!-- 鍙充晶鐩綍鏍?-->
       <div style="flex-shrink: 0; width: 280px;">
         {{ partial "enhanced-toc.html" . }}
       </div>
@@ -198,7 +198,7 @@
     background: rgba(0,255,255,0.05);
   }
   
-  /* 代码高亮样式 - 优化MD渲染 */
+  /* 浠ｇ爜楂樹寒鏍峰紡 - 浼樺寲MD娓叉煋 */
   .article-content pre,
   .article-content .highlight pre {
     background: #1e1e1e;
@@ -223,7 +223,7 @@
     padding: 0;
   }
   
-  /* 代码块整体样式 */
+  /* 浠ｇ爜鍧楁暣浣撴牱寮?*/
   .article-content .chroma,
   .article-content .highlight .chroma {
     color: #d4d4d4;
@@ -232,10 +232,10 @@
     position: relative;
   }
   
-  /* 复制按钮 */
+  /* 澶嶅埗鎸夐挳 */
   .article-content .chroma::before,
   .article-content .highlight .chroma::before {
-    content: '📋';
+    content: '馃搵';
     position: absolute;
     top: 10px;
     right: 15px;
@@ -255,13 +255,13 @@
     background: rgba(0,255,255,0.2);
   }
   
-  /* 代码内容 */
+  /* 浠ｇ爜鍐呭 */
   .article-content .chroma .code,
   .article-content .highlight .chroma .code {
     padding: 20px;
   }
   
-  /* 代码高亮颜色 - 优化效果 */
+  /* 浠ｇ爜楂樹寒棰滆壊 - 浼樺寲鏁堟灉 */
   .article-content .chroma .k,
   .article-content .highlight .chroma .k {
     color: #ff79c6;
@@ -523,8 +523,7 @@
   }
 </style>
 <script>
-  // 代码块复制功能
-  document.addEventListener('DOMContentLoaded', function() {
+  // 浠ｇ爜鍧楀鍒跺姛鑳?  document.addEventListener('DOMContentLoaded', function() {
     const codeBlocks = document.querySelectorAll('.article-content .chroma, .article-content .highlight .chroma');
     codeBlocks.forEach(block => {
       block.addEventListener('click', function(e) {
@@ -532,12 +531,12 @@
           const code = this.querySelector('code').textContent;
           navigator.clipboard.writeText(code).then(() => {
             const originalContent = this.style.content;
-            this.style.content = '✅';
+            this.style.content = '鉁?;
             setTimeout(() => {
-              this.style.content = '📋';
+              this.style.content = '馃搵';
             }, 2000);
           }).catch(err => {
-            console.error('复制失败:', err);
+            console.error('澶嶅埗澶辫触:', err);
           });
         }
       });
