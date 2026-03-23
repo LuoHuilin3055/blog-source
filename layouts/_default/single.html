@@ -199,7 +199,8 @@
   }
   
   /* 代码高亮样式 - 优化MD渲染 */
-  .article-content pre {
+  .article-content pre,
+  .article-content .highlight pre {
     background: #1e1e1e;
     padding: 0;
     border-radius: 8px;
@@ -210,18 +211,21 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   
-  .article-content code {
+  .article-content code,
+  .article-content .highlight code {
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 0.9em;
   }
   
-  .article-content pre code {
+  .article-content pre code,
+  .article-content .highlight pre code {
     background: none;
     padding: 0;
   }
   
   /* 代码块整体样式 */
-  .article-content .chroma {
+  .article-content .chroma,
+  .article-content .highlight .chroma {
     color: #d4d4d4;
     background-color: #1e1e1e;
     border-radius: 8px;
@@ -229,7 +233,8 @@
   }
   
   /* 复制按钮 */
-  .article-content .chroma::before {
+  .article-content .chroma::before,
+  .article-content .highlight .chroma::before {
     content: '📋';
     position: absolute;
     top: 10px;
@@ -244,214 +249,266 @@
     z-index: 10;
   }
   
-  .article-content .chroma:hover::before {
+  .article-content .chroma:hover::before,
+  .article-content .highlight .chroma:hover::before {
     color: #00ffff;
     background: rgba(0,255,255,0.2);
   }
   
   /* 代码内容 */
-  .article-content .chroma .code {
+  .article-content .chroma .code,
+  .article-content .highlight .chroma .code {
     padding: 20px;
   }
   
   /* 代码高亮颜色 - 优化效果 */
-  .article-content .chroma .k {
+  .article-content .chroma .k,
+  .article-content .highlight .chroma .k {
     color: #ff79c6;
   }
   
-  .article-content .chroma .kc {
+  .article-content .chroma .kc,
+  .article-content .highlight .chroma .kc {
     color: #ff79c6;
   }
   
-  .article-content .chroma .kd {
+  .article-content .chroma .kd,
+  .article-content .highlight .chroma .kd {
     color: #ff79c6;
   }
   
-  .article-content .chroma .kn {
+  .article-content .chroma .kn,
+  .article-content .highlight .chroma .kn {
     color: #ff79c6;
   }
   
-  .article-content .chroma .kp {
+  .article-content .chroma .kp,
+  .article-content .highlight .chroma .kp {
     color: #ff79c6;
   }
   
-  .article-content .chroma .kr {
+  .article-content .chroma .kr,
+  .article-content .highlight .chroma .kr {
     color: #ff79c6;
   }
   
-  .article-content .chroma .kt {
+  .article-content .chroma .kt,
+  .article-content .highlight .chroma .kt {
     color: #8be9fd;
   }
   
-  .article-content .chroma .na {
+  .article-content .chroma .na,
+  .article-content .highlight .chroma .na {
     color: #50fa7b;
   }
   
-  .article-content .chroma .nc {
+  .article-content .chroma .nc,
+  .article-content .highlight .chroma .nc {
     color: #50fa7b;
   }
   
-  .article-content .chroma .no {
+  .article-content .chroma .no,
+  .article-content .highlight .chroma .no {
     color: #bd93f9;
   }
   
-  .article-content .chroma .nd {
+  .article-content .chroma .nd,
+  .article-content .highlight .chroma .nd {
     color: #50fa7b;
   }
   
-  .article-content .chroma .ni {
+  .article-content .chroma .ni,
+  .article-content .highlight .chroma .ni {
     color: #d4d4d4;
   }
   
-  .article-content .chroma .ne {
+  .article-content .chroma .ne,
+  .article-content .highlight .chroma .ne {
     color: #50fa7b;
   }
   
-  .article-content .chroma .nf {
+  .article-content .chroma .nf,
+  .article-content .highlight .chroma .nf {
     color: #50fa7b;
   }
   
-  .article-content .chroma .nl {
+  .article-content .chroma .nl,
+  .article-content .highlight .chroma .nl {
     color: #d4d4d4;
   }
   
-  .article-content .chroma .nn {
+  .article-content .chroma .nn,
+  .article-content .highlight .chroma .nn {
     color: #d4d4d4;
   }
   
-  .article-content .chroma .nx {
+  .article-content .chroma .nx,
+  .article-content .highlight .chroma .nx {
     color: #50fa7b;
   }
   
-  .article-content .chroma .py {
+  .article-content .chroma .py,
+  .article-content .highlight .chroma .py {
     color: #d4d4d4;
   }
   
-  .article-content .chroma .nt {
+  .article-content .chroma .nt,
+  .article-content .highlight .chroma .nt {
     color: #ff79c6;
   }
   
-  .article-content .chroma .nv {
+  .article-content .chroma .nv,
+  .article-content .highlight .chroma .nv {
     color: #d4d4d4;
   }
   
-  .article-content .chroma .l {
+  .article-content .chroma .l,
+  .article-content .highlight .chroma .l {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .ld {
+  .article-content .chroma .ld,
+  .article-content .highlight .chroma .ld {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .s {
+  .article-content .chroma .s,
+  .article-content .highlight .chroma .s {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .sa {
+  .article-content .chroma .sa,
+  .article-content .highlight .chroma .sa {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .sb {
+  .article-content .chroma .sb,
+  .article-content .highlight .chroma .sb {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .sc {
+  .article-content .chroma .sc,
+  .article-content .highlight .chroma .sc {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .dl {
+  .article-content .chroma .dl,
+  .article-content .highlight .chroma .dl {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .sd {
+  .article-content .chroma .sd,
+  .article-content .highlight .chroma .sd {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .s2 {
+  .article-content .chroma .s2,
+  .article-content .highlight .chroma .s2 {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .se {
+  .article-content .chroma .se,
+  .article-content .highlight .chroma .se {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .sh {
+  .article-content .chroma .sh,
+  .article-content .highlight .chroma .sh {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .si {
+  .article-content .chroma .si,
+  .article-content .highlight .chroma .si {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .sx {
+  .article-content .chroma .sx,
+  .article-content .highlight .chroma .sx {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .sr {
+  .article-content .chroma .sr,
+  .article-content .highlight .chroma .sr {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .s1 {
+  .article-content .chroma .s1,
+  .article-content .highlight .chroma .s1 {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .ss {
+  .article-content .chroma .ss,
+  .article-content .highlight .chroma .ss {
     color: #f1fa8c;
   }
   
-  .article-content .chroma .m {
+  .article-content .chroma .m,
+  .article-content .highlight .chroma .m {
     color: #bd93f9;
   }
   
-  .article-content .chroma .mb {
+  .article-content .chroma .mb,
+  .article-content .highlight .chroma .mb {
     color: #bd93f9;
   }
   
-  .article-content .chroma .mf {
+  .article-content .chroma .mf,
+  .article-content .highlight .chroma .mf {
     color: #bd93f9;
   }
   
-  .article-content .chroma .mh {
+  .article-content .chroma .mh,
+  .article-content .highlight .chroma .mh {
     color: #bd93f9;
   }
   
-  .article-content .chroma .mi {
+  .article-content .chroma .mi,
+  .article-content .highlight .chroma .mi {
     color: #bd93f9;
   }
   
-  .article-content .chroma .mo {
+  .article-content .chroma .mo,
+  .article-content .highlight .chroma .mo {
     color: #bd93f9;
   }
   
-  .article-content .chroma .c {
+  .article-content .chroma .c,
+  .article-content .highlight .chroma .c {
     color: #6272a4;
   }
   
-  .article-content .chroma .ch {
+  .article-content .chroma .ch,
+  .article-content .highlight .chroma .ch {
     color: #6272a4;
   }
   
-  .article-content .chroma .cm {
+  .article-content .chroma .cm,
+  .article-content .highlight .chroma .cm {
     color: #6272a4;
   }
   
-  .article-content .chroma .c1 {
+  .article-content .chroma .c1,
+  .article-content .highlight .chroma .c1 {
     color: #6272a4;
   }
   
-  .article-content .chroma .cs {
+  .article-content .chroma .cs,
+  .article-content .highlight .chroma .cs {
     color: #6272a4;
   }
   
-  .article-content .chroma .o {
+  .article-content .chroma .o,
+  .article-content .highlight .chroma .o {
     color: #ff79c6;
   }
   
-  .article-content .chroma .ow {
+  .article-content .chroma .ow,
+  .article-content .highlight .chroma .ow {
     color: #ff79c6;
   }
   
-  .article-content .chroma .p {
+  .article-content .chroma .p,
+  .article-content .highlight .chroma .p {
     color: #d4d4d4;
   }
   
@@ -468,7 +525,7 @@
 <script>
   // 代码块复制功能
   document.addEventListener('DOMContentLoaded', function() {
-    const codeBlocks = document.querySelectorAll('.article-content .chroma');
+    const codeBlocks = document.querySelectorAll('.article-content .chroma, .article-content .highlight .chroma');
     codeBlocks.forEach(block => {
       block.addEventListener('click', function(e) {
         if (e.target === this || e.target === this.querySelector('code')) {
