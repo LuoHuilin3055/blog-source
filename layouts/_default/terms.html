@@ -3,44 +3,219 @@
 {{ end }}
 
 {{ define "main" }}
-<div style="
-  background-color: #000000;
-  min-height: 100vh;
-  padding: 120px 20px 60px;
-">
-  <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
-    <h1 style="
-      font-size: 3.5em;
+  {{ $bgImage := "images/background.jpg" | absURL }}
+  
+  <style>
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .archive-year {
+      margin-bottom: 40px;
+      animation: fadeInDown 0.8s ease;
+    }
+    
+    .archive-year h2 {
       color: #00ffff;
-      margin: 0;
-      text-shadow: 0 0 20px rgba(0,255,255,0.5);
-    ">{{ .Title }}</h1>
+      font-size: 2em;
+      margin: 0 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,255,255,0.3);
+    }
+    
+    .archive-month {
+      margin-bottom: 30px;
+    }
+    
+    .archive-month h3 {
+      color: #fff;
+      font-size: 1.3em;
+      margin: 0 0 15px;
+    }
+    
+    .archive-post {
+      display: flex;
+      margin-bottom: 12px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .archive-post:hover {
+      background: rgba(0,255,255,0.1);
+      transform: translateX(10px);
+    }
+    
+    .archive-date {
+      flex-shrink: 0;
+      width: 120px;
+      color: #888;
+      font-size: 0.9em;
+    }
+    
+    .archive-title {
+      flex: 1;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1em;
+      transition: color 0.3s ease;
+    }
+    
+    .archive-title:hover {
+      color: #00ffff;
+    }
+    
+    .archive-tags {
+      flex-shrink: 0;
+      display: flex;
+      gap: 6px;
+      margin-left: 20px;
+    }
+    
+    .archive-tag {
+      font-size: 0.7em;
+      color: #00ffff;
+      background: rgba(0,255,255,0.1);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    
+    .category-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    
+    .category-cloud a {
+      display: inline-block;
+      background: #111;
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      border: 1px solid #333;
+      transition: all 0.3s;
+    }
+    
+    .category-cloud a:hover {
+      background: #00ffff;
+      color: #000;
+      border-color: #00ffff;
+    }
+    
+    .category-cloud a span {
+      color: #00ffff;
+    }
+    
+    .category-cloud a:hover span {
+      color: #000;
+    }
+  </style>
+  
+  <div style="
+    background-image: url('{{ $bgImage }}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 120px 20px 60px;
+    position: relative;
+  ">
+    <!-- 背景遮罩 -->
     <div style="
-      width: 80px;
-      height: 3px;
-      background: linear-gradient(90deg, #00ffff, transparent);
-      margin: 20px auto 40px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 0;
     "></div>
     
-    <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
-      {{ range .Data.Terms.Alphabetical }}
-      <a href="{{ .Page.RelPermalink }}" style="
-        display: inline-block;
-        background: #111;
-        color: #fff;
-        text-decoration: none;
-        padding: 12px 25px;
-        border-radius: 30px;
-        border: 1px solid #333;
-        transition: all 0.3s;
-      " onmouseover="this.style.background='#00ffff'; this.style.color='#000'; this.style.borderColor='#00ffff';"
-         onmouseout="this.style.background='#111'; this.style.color='#fff'; this.style.borderColor='#333';">
-        {{ .Page.Title }} <span style="color: #00ffff;">({{ .Count }})</span>
-      </a>
+    <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+      <!-- 页面标题 -->
+      <div style="text-align: center; margin-bottom: 60px;">
+        <h1 style="
+          font-size: clamp(2.5em, 6vw, 3.5em);
+          color: #00ffff;
+          margin: 0;
+          text-shadow: 0 0 20px rgba(0,255,255,0.5);
+          letter-spacing: 2px;
+          animation: fadeInDown 0.8s ease;
+        ">{{ .Title }}</h1>
+        <div style="
+          width: 80px;
+          height: 3px;
+          background: linear-gradient(90deg, #00ffff, transparent);
+          margin: 20px auto 0;
+          animation: fadeInDown 0.8s ease 0.2s both;
+        "></div>
+      </div>
+      
+      <!-- 分类/标签云 -->
+      {{ if .Data.Terms }}
+        <div class="category-cloud">
+          {{ range .Data.Terms.Alphabetical }}
+          <a href="{{ .Page.RelPermalink }}">
+            {{ .Page.Title }} <span>({{ .Count }})</span>
+          </a>
+          {{ end }}
+        </div>
+      {{ end }}
+      
+      <!-- 文章列表 - 按年份和月份组织 -->
+      {{ $pages := .Pages }}
+      {{ $years := $pages.GroupByDate "2006" }}
+      
+      {{ if $years }}
+        {{ range $years }}
+          <div class="archive-year">
+            <h2>{{ .Key }}</h2>
+            {{ $months := .Pages.GroupByDate "01" }}
+            {{ range $months }}
+              <div class="archive-month">
+                <h3>{{ .Key }}月</h3>
+                {{ range .Pages }}
+                  <div class="archive-post">
+                    <div class="archive-date">{{ dateFormat "01-02" .Date }}</div>
+                    <a href="{{ .Permalink }}" class="archive-title">{{ .Title }}</a>
+                    {{ if .Params.tags }}
+                      <div class="archive-tags">
+                        {{ range .Params.tags }}
+                          <span class="archive-tag">{{ . }}</span>
+                        {{ end }}
+                      </div>
+                    {{ end }}
+                  </div>
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+        {{ end }}
+      {{ else }}
+        <div style="
+          text-align: center;
+          padding: 80px 20px;
+          color: #666;
+          background: rgba(0,0,0,0.5);
+          border-radius: 16px;
+          border: 1px solid #333;
+        ">
+          <p style="font-size: 1.2em;">暂无文章，敬请期待...</p>
+        </div>
       {{ end }}
     </div>
   </div>
-</div>
 {{ end }}
 
 {{ define "footer" }}
