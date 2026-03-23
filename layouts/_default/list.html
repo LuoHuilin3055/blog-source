@@ -16,6 +16,77 @@
         transform: translateY(0);
       }
     }
+    
+    .archive-year {
+      margin-bottom: 40px;
+      animation: fadeInDown 0.8s ease;
+    }
+    
+    .archive-year h2 {
+      color: #00ffff;
+      font-size: 2em;
+      margin: 0 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,255,255,0.3);
+    }
+    
+    .archive-month {
+      margin-bottom: 30px;
+    }
+    
+    .archive-month h3 {
+      color: #fff;
+      font-size: 1.3em;
+      margin: 0 0 15px;
+    }
+    
+    .archive-post {
+      display: flex;
+      margin-bottom: 12px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .archive-post:hover {
+      background: rgba(0,255,255,0.1);
+      transform: translateX(10px);
+    }
+    
+    .archive-date {
+      flex-shrink: 0;
+      width: 120px;
+      color: #888;
+      font-size: 0.9em;
+    }
+    
+    .archive-title {
+      flex: 1;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1em;
+      transition: color 0.3s ease;
+    }
+    
+    .archive-title:hover {
+      color: #00ffff;
+    }
+    
+    .archive-tags {
+      flex-shrink: 0;
+      display: flex;
+      gap: 6px;
+      margin-left: 20px;
+    }
+    
+    .archive-tag {
+      font-size: 0.7em;
+      color: #00ffff;
+      background: rgba(0,255,255,0.1);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
   </style>
   
   <div style="
@@ -58,19 +129,64 @@
         "></div>
       </div>
       
-      <!-- 文章卡片网格 -->
-      <div style="
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 30px;
-      ">
-        {{ range .Pages }}
-          {{ partial "article-card.html" . }}
+      <!-- 根据页面类型显示不同内容 -->
+      {{ if eq .Section "posts" }}
+        <!-- Posts页面 - 显示文章卡片 -->
+        <div style="
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+          gap: 30px;
+        ">
+          {{ range .Pages }}
+            {{ partial "article-card.html" . }}
+          {{ end }}
+        </div>
+      {{ else }}
+        <!-- 归档页面 - 显示时间线 -->
+        {{ $pages := .Pages }}
+        {{ $years := $pages.GroupByDate "2006" }}
+        
+        {{ if $years }}
+          {{ range $years }}
+            <div class="archive-year">
+              <h2>{{ .Key }}</h2>
+              {{ $months := .Pages.GroupByDate "01" }}
+              {{ range $months }}
+                <div class="archive-month">
+                  <h3>{{ .Key }}月</h3>
+                  {{ range .Pages }}
+                    <div class="archive-post">
+                      <div class="archive-date">{{ dateFormat "01-02" .Date }}</div>
+                      <a href="{{ .Permalink }}" class="archive-title">{{ .Title }}</a>
+                      {{ if .Params.tags }}
+                        <div class="archive-tags">
+                          {{ range .Params.tags }}
+                            <span class="archive-tag">{{ . }}</span>
+                          {{ end }}
+                        </div>
+                      {{ end }}
+                    </div>
+                  {{ end }}
+                </div>
+              {{ end }}
+            </div>
+          {{ end }}
+        {{ else }}
+          <div style="
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+            background: rgba(0,0,0,0.5);
+            border-radius: 16px;
+            border: 1px solid #333;
+          ">
+            <p style="font-size: 1.2em;">暂无文章，敬请期待...</p>
+          </div>
         {{ end }}
-      </div>
+      {{ end }}
       
       <!-- 如果没有文章 -->
-      {{ if eq (len .Pages) 0 }}
+      {{ if and (eq .Section "posts") (eq (len .Pages) 0) }}
       <div style="
         text-align: center;
         padding: 80px 20px;
