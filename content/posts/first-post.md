@@ -1,6 +1,7 @@
 ---
 title: "第一篇文章"
 date: 2026-03-22
+lastmod:2026-03-22
 draft: false
 tags:
   - 随笔
