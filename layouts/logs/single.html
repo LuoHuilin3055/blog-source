@@ -1,0 +1,142 @@
+{{ define "header" }}
+  {{ partial "site-header.html" . }}
+{{ end }}
+
+{{ define "main" }}
+  {{ $bgImage := .Params.cover | default "images/background.jpg" | absURL }}
+  
+  <style>
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .article-container {
+      max-width: 800px;
+      margin: 0 auto;
+      animation: fadeInDown 0.8s ease;
+    }
+    
+    .article-header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    
+    .article-title {
+      color: #00ffff;
+      font-size: 2.5em;
+      margin: 0 0 20px;
+      text-shadow: 0 0 20px rgba(0,255,255,0.5);
+    }
+    
+    .article-meta {
+      color: #888;
+      font-size: 0.9em;
+      margin-bottom: 30px;
+    }
+    
+    .article-meta span {
+      margin: 0 10px;
+    }
+    
+    .article-content {
+      background: rgba(0,0,0,0.6);
+      border-radius: 16px;
+      padding: 40px;
+      border: 1px solid rgba(0,255,255,0.2);
+    }
+    
+    .article-content p {
+      color: #fff;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    
+    .article-content h1, .article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6 {
+      color: #00ffff;
+      margin: 30px 0 20px;
+    }
+    
+    .article-content a {
+      color: #00ffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .article-content a:hover {
+      text-decoration: underline;
+    }
+    
+    .article-tags {
+      margin-top: 40px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .article-tag {
+      font-size: 0.8em;
+      color: #00ffff;
+      background: rgba(0,255,255,0.1);
+      padding: 5px 15px;
+      border-radius: 20px;
+    }
+  </style>
+  
+  <div style="
+    background-image: url('{{ $bgImage }}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 120px 20px 60px;
+    position: relative;
+  " id="page-top">
+    <!-- 背景遮罩 -->
+    <div style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 0;
+    "></div>
+    
+    <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+      <div class="article-container">
+        <!-- 文章头部 -->
+        <div class="article-header">
+          <h1 class="article-title">{{ .Title }}</h1>
+          <div class="article-meta">
+            <span>{{ dateFormat "2006-01-02" .Date }}</span>
+          </div>
+        </div>
+        
+        <!-- 文章内容 -->
+        <div class="article-content">
+          {{ .Content }}
+          
+          <!-- 文章标签 -->
+          {{ if .Params.tags }}
+            <div class="article-tags">
+              {{ range .Params.tags }}
+                <span class="article-tag">{{ . }}</span>
+              {{ end }}
+            </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+{{ end }}
+
+{{ define "footer" }}
+  {{ partial "site-footer.html" . }}
+{{ end }}
