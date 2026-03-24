@@ -254,13 +254,14 @@
       <!-- 文章列表 - 按年份和月份组织 -->
       {{ $pages := .Pages }}
       <!-- 如果是分类列表页面（如/categories/），则显示所有文章 -->
-      {{ if and (eq .Kind "taxonomy") (eq (len .Pages) 0) }}
+      {{ if and (eq .Kind "taxonomy") (eq (len .Pages) 0) (eq .Data.Plural "categories") }}
         {{ $pages = .Site.RegularPages }}
       {{ end }}
       
       {{ $years := $pages.GroupByDate "2006" }}
       
-      {{ if $years }}
+      <!-- 只在分类页面显示时间线，标签页面不显示 -->
+      {{ if and $years (eq .Data.Plural "categories") }}
         <div class="timeline-container">
           <!-- 归档头部 -->
           <div class="timeline-header">
@@ -297,7 +298,7 @@
             {{ end }}
           </div>
         </div>
-      {{ else }}
+      {{ else if not $years }}
         <div style="
           text-align: center;
           padding: 80px 20px;
