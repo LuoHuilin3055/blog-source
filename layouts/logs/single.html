@@ -242,7 +242,10 @@
         <div class="article-header">
           <h1 class="article-title">{{ .Title }}</h1>
           <div class="article-meta">
-            <span>{{ dateFormat "2006-01-02" .Date }}</span>
+            <span>📅 {{ dateFormat "2006-01-02" .Date }}</span>
+            {{ if ne .Date .Lastmod }}
+            <span>✏️ {{ dateFormat "2006-01-02" .Lastmod }}</span>
+            {{ end }}
           </div>
         </div>
         
