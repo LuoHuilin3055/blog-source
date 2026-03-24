@@ -18,8 +18,20 @@
     }
     
     .article-container {
-      max-width: 800px;
+      max-width: 1400px;
       margin: 0 auto;
+      display: flex;
+      gap: 40px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .article-content-wrapper {
+      flex: 1;
+      background: rgba(0,0,0,0.6);
+      border-radius: 16px;
+      padding: 40px;
+      border: 1px solid rgba(0,255,255,0.2);
       animation: fadeInDown 0.8s ease;
     }
     
@@ -46,15 +58,11 @@
     }
     
     .article-content {
-      background: rgba(0,0,0,0.6);
-      border-radius: 16px;
-      padding: 40px;
-      border: 1px solid rgba(0,255,255,0.2);
+      color: #fff;
+      line-height: 2.2;
     }
     
     .article-content p {
-      color: #fff;
-      line-height: 2.2;
       margin-bottom: 25px;
       text-indent: 2em;
     }
@@ -66,7 +74,6 @@
     }
     
     .article-content ul, .article-content ol {
-      color: #fff;
       margin: 25px 0;
       padding-left: 2em;
       line-height: 2.2;
@@ -183,6 +190,29 @@
       padding: 5px 15px;
       border-radius: 20px;
     }
+    
+    .toc-sidebar {
+      flex-shrink: 0;
+      width: 300px;
+    }
+    
+    @media (max-width: 1024px) {
+      .article-container {
+        flex-direction: column;
+      }
+      
+      .toc-sidebar {
+        width: 100%;
+      }
+      
+      .article-content-wrapper {
+        order: 2;
+      }
+      
+      .toc-sidebar {
+        order: 1;
+      }
+    }
   </style>
   
   <div style="
@@ -205,8 +235,9 @@
       z-index: 0;
     "></div>
     
-    <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
-      <div class="article-container">
+    <div class="article-container">
+      <!-- 文章内容 -->
+      <div class="article-content-wrapper">
         <!-- 文章头部 -->
         <div class="article-header">
           <h1 class="article-title">{{ .Title }}</h1>
@@ -228,6 +259,11 @@
             </div>
           {{ end }}
         </div>
+      </div>
+      
+      <!-- 右侧目录栏 -->
+      <div class="toc-sidebar">
+        {{ partial "enhanced-toc.html" . }}
       </div>
     </div>
   </div>
