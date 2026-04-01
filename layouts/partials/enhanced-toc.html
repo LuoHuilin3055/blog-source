@@ -51,7 +51,7 @@
     >
       <span style="display: flex; align-items: center; gap: 6px;">
         <span style="font-size: 1.1em;">📋</span>
-        <span>收起</span>
+        <span id="toc-toggle-text">收起</span>
       </span>
     </button>
   </div>
@@ -187,21 +187,38 @@
   
   /* 滚动条样式 */
   #toc-container::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
   
   #toc-container::-webkit-scrollbar-track {
     background: rgba(0,0,0,0.3);
-    border-radius: 3px;
+    border-radius: 4px;
   }
   
   #toc-container::-webkit-scrollbar-thumb {
     background: rgba(0,255,255,0.3);
-    border-radius: 3px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
   }
   
   #toc-container::-webkit-scrollbar-thumb:hover {
     background: rgba(0,255,255,0.5);
+  }
+  
+  /* 目录项展开/折叠按钮 */
+  .toc-toggle {
+    background: none;
+    border: none;
+    color: #00ffff;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-right: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .toc-toggle:hover {
+    color: #fff;
+    transform: rotate(90deg);
   }
   
   /* 响应式设计 */
@@ -226,6 +243,21 @@
       font-size: 1.2em;
     }
   }
+  
+  /* 目录容器动画 */
+  #toc-container:hover {
+    box-shadow: 0 10px 40px rgba(0,255,255,0.6);
+    transform: translateY(-2px);
+  }
+  
+  /* 目录项动画 */
+  .enhanced-toc li {
+    transition: all 0.3s ease;
+  }
+  
+  .enhanced-toc li:hover {
+    transform: translateX(5px);
+  }
 </style>
 
 <script>
@@ -234,7 +266,7 @@
   function toggleTOC() {
     const tocContent = document.getElementById('toc-content');
     const button = event.target.closest('button');
-    const buttonText = button.querySelector('span span:last-child');
+    const buttonText = document.getElementById('toc-toggle-text');
     
     if (tocCollapsed) {
       tocContent.style.maxHeight = '1000px';
@@ -301,5 +333,24 @@
         }
       });
     }
+    
+    // 添加目录项展开/折叠功能
+    const tocItems = document.querySelectorAll('.enhanced-toc li');
+    tocItems.forEach(item => {
+      const sublist = item.querySelector('ul');
+      if (sublist) {
+        const toggle = document.createElement('button');
+        toggle.className = 'toc-toggle';
+        toggle.innerHTML = '▶';
+        toggle.onclick = function() {
+          sublist.style.display = sublist.style.display === 'none' ? 'block' : 'none';
+          this.innerHTML = sublist.style.display === 'none' ? '▶' : '▼';
+        };
+        const link = item.querySelector('a');
+        if (link) {
+          link.parentNode.insertBefore(toggle, link);
+        }
+      }
+    });
   });
 </script>
