@@ -306,18 +306,17 @@
                 const tocContainer = document.getElementById('toc-container');
                 const activeLink = link;
                 
-                // 检查当前高亮项是否在视图中
-                const linkRect = activeLink.getBoundingClientRect();
-                const containerRect = tocContainer.getBoundingClientRect();
-                
-                // 如果高亮项不在视图中，才进行滚动
-                if (linkRect.top < containerRect.top || linkRect.bottom > containerRect.bottom) {
+                if (tocContainer && activeLink) {
+                  // 简化滚动逻辑，直接滚动到高亮项
                   // 计算滚动位置，使高亮项居中
                   const scrollPosition = activeLink.offsetTop - tocContainer.offsetHeight / 2 + activeLink.offsetHeight / 2;
                   
+                  // 确保滚动位置不小于0
+                  const finalScrollPosition = Math.max(0, scrollPosition);
+                  
                   // 使用平滑滚动
                   tocContainer.scrollTo({
-                    top: scrollPosition,
+                    top: finalScrollPosition,
                     behavior: 'smooth'
                   });
                 }
