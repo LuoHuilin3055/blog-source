@@ -18,9 +18,13 @@ nano my_script.py
 # python3 文件名  运行
 ```
 # 查看文件头、十六进制验证（类似winhex）
-`ghex xxx.jpg`
+```bash
+ghex xxx.jpg
+```
 # 修改文件名
-`mv admin.exe admin.png`
+```bash
+mv admin.exe admin.png
+```
 # 拥有的工具
 ```bash
 sudo apt update
@@ -35,6 +39,10 @@ vim-common \
 libimage-exiftool-perl -y
 ```
 # 判断文件类型
-`binwalk 文件`
+```bash
+binwalk 文件
+```
 # 提取数据
-`binwalk -e 文件`
+```bash
+binwalk -e 文件
+```
