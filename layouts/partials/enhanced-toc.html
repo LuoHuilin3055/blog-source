@@ -307,11 +307,18 @@
                 const activeLink = link;
                 
                 if (tocContainer && activeLink) {
-                  // 简化滚动逻辑，直接滚动到高亮项
                   // 计算滚动位置，使高亮项居中
-                  const scrollPosition = activeLink.offsetTop - tocContainer.offsetHeight / 2 + activeLink.offsetHeight / 2;
+                  // 注意：使用getBoundingClientRect来获取相对于容器的位置
+                  const containerRect = tocContainer.getBoundingClientRect();
+                  const linkRect = activeLink.getBoundingClientRect();
                   
-                  // 确保滚动位置不小于0
+                  // 计算相对于容器的偏移量
+                  const relativeTop = linkRect.top - containerRect.top;
+                  
+                  // 计算滚动位置，使高亮项居中
+                  const scrollPosition = tocContainer.scrollTop + relativeTop - (containerRect.height / 2) + (linkRect.height / 2);
+                  
+                  // 确保滚动位置在合理范围内
                   const finalScrollPosition = Math.max(0, scrollPosition);
                   
                   // 使用平滑滚动
