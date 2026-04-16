@@ -1,0 +1,26 @@
+# 友链数据
+# 格式：
+# - name: 网站名称
+#   url: 网站链接
+#   description: 网站描述
+#   avatar: 头像链接
+
+- name: 示例博客
+  url: https://example.com
+  description: 这是一个示例博客
+  avatar: https://via.placeholder.com/100
+
+- name: 技术社区
+  url: https://techcommunity.com
+  description: 技术交流社区
+  avatar: https://via.placeholder.com/100
+
+- name: 编程学习
+  url: https://programming.com
+  description: 编程学习资源
+  avatar: https://via.placeholder.com/100
+
+ - name: Daochunhan
+   url: https://daochunhan25.site/
+   description: 大大大大大佬
+   avatar: https://daochunhan25.site/img/profile.png
