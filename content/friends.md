@@ -9,6 +9,5 @@ lastmod: 2026-04-16
 ---
 
 
-## 友链列表
 
 {{ partial "friends.html" . }}
