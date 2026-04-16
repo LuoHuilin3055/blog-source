@@ -19,8 +19,8 @@ tags:
 
 ---
 ### contact
-**wechat**：`bGluMTg0NjkyNjU4NTQ=`
-**email**：`MjE0NzIwODUxMEBxcS5jb20=`
-~~那个`contact`页面就是个展示`404`的，因为当时调了好久，舍不得删除了
+**wechat**：`bGluMTg0NjkyNjU4NTQ=`     
+**email**：`MjE0NzIwODUxMEBxcS5jb20=`    
+~~那个`contact`页面就是个展示`404`的，因为当时调了好久，舍不得删除了~~
 
 
