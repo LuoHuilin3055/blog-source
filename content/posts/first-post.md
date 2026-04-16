@@ -1,12 +1,12 @@
 ---
-title: "第一篇文章"
+title: 第一篇文章
 date: 2026-03-22
 lastmod: 2026-03-22
-draft: false
+draft: true
 tags:
   - 随笔
   - 博客
-cover: "images/background.jpg"
+cover: images/background.jpg
 ---
 
 # 欢迎来到我的博客

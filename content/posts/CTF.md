@@ -46,3 +46,18 @@ print(result)
   b = b.write(a.read()[::-1])  #将flag.jpg图片的byte数据，倒着写入png.png图片里
 ```
 ---
+
+## 添加文件头
+- 先用`binwalk`判断文件类型为`PNG`，用`GHEX`打开
+```bash
+binwalk no_hex
+ghex no_hex
+```
+- 打开后发现文件头缺失，`INS` -> 添加`89 50 4E 47`
+- 另存为`CTRL + SHIFT + S`
+---
+
+## 修改宽高
+```python
+python Deformed-Image-Restorer.py -i demo.png
+```
