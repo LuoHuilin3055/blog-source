@@ -4,7 +4,7 @@ tags:
   - 笔记
   - "#AI"
 date: 2026-04-09
-draft:
+draft: true
 lastmod: 2026-04-10
 ---
 [titanwings/ex-skill: 致你忘不掉的那个TA，你们干大模型都是码圣 It's giving rebirth era. Welcome to Digital Life 1.0. 🫶](https://github.com/titanwings/ex-skill?tab=readme-ov-file)
