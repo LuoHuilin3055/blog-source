@@ -4,23 +4,205 @@
     <meta charset="utf-8">
     <title>{{ .Title }} | {{ .Site.Title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --font-sans: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            --primary-color: #00ffff;
+            --secondary-color: #a5b4fc;
+            --bg-primary: #000000;
+            --bg-secondary: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body, html {
             margin: 0;
             padding: 0;
-            background-color: #000000;
-            color: #ffffff;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             width: 100%;
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        /* 阅读进度条 */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            z-index: 1000;
+            transition: width 0.2s ease;
+        }
+        
+        /* Lightbox 样式 */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .lightbox-close:hover {
+            color: var(--primary-color);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-sans);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: #cbd5e1;
+        }
+        
+        a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: #a5b4fc;
+        }
+        
+        code {
+            font-family: var(--font-mono);
+            background: #1e293b;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
     </style>
     {{ block "head" . }}{{ end }}
     {{ partial "custom-head.html" . }}
 </head>
-<body style="background-color: #000000; margin: 0; padding: 0;">
+<body style="background-color: var(--bg-primary); margin: 0; padding: 0;">
+    <!-- 阅读进度条 -->
+    <div class="reading-progress" id="readingProgress"></div>
+    
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img class="lightbox-content" id="lightboxImage" src="" alt="">
+    </div>
+    
     {{ block "header" . }}{{ partial "site-header.html" . }}{{ end }}
-    <main style="background-color: #000000;">
+    <main style="background-color: var(--bg-primary);">
         {{ block "main" . }}{{ end }}
     </main>
     {{ block "footer" . }}{{ partial "site-footer.html" . }}{{ end }}
+    
+    <script>
+        // 阅读进度条
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("readingProgress").style.width = scrolled + "%";
+        });
+        
+        // Lightbox 功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxClose = document.getElementById('lightboxClose');
+            
+            // 为所有图片添加点击事件
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    lightboxImage.src = this.src;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // 关闭 lightbox
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            
+            lightboxClose.addEventListener('click', closeLightbox);
+            
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+            
+            // 按 ESC 键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
