@@ -256,7 +256,50 @@
         {{ $pages = .Site.RegularPages }}
       {{ end }}
       
-      {{ if not .Data.Terms }}
+      {{ $years := $pages.GroupByDate "2006" }}
+      
+      <!-- 只在Archive页面显示时间线，Tag页面不显示 -->
+      {{ if and $years (not (eq .Data.Plural "tags")) }}
+        <div class="timeline-container">
+          <!-- 归档头部 -->
+          <div class="timeline-header">
+            <h2>全部文章 - {{ len $pages }}</h2>
+            <span>按时间顺序排列</span>
+          </div>
+          
+          <!-- 时间线 -->
+          <div class="timeline">
+            {{ range $years }}
+              <div class="timeline-year">
+                <h3>{{ .Key }}</h3>
+                {{ range .Pages.ByDate.Reverse }}
+                  <div class="timeline-item">
+                    {{ if .Params.cover }}
+                    <div class="timeline-item-image">
+                      <img src="{{ .Params.cover | absURL }}" alt="{{ .Title }}" loading="lazy" />
+                    </div>
+                    {{ end }}
+                    <div class="timeline-item-content">
+                      <div class="timeline-item-date">{{ dateFormat "2006-01-02" .Date }}</div>
+                      <h4 class="timeline-item-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+                      {{ if .Params.tags }}
+                        {{ $colors := slice "#00ffff" "#a5b4fc" "#50fa7b" "#ffb86c" "#ff79c6" "#bd93f9" "#ff5555" "#8be9fd" "#f1fa8c" "#6272a4" }}
+                        <div class="timeline-tags">
+                          {{ range $index, $tag := .Params.tags }}
+                            {{ $colorIndex := mod $index (len $colors) }}
+                            {{ $tagColor := index $colors $colorIndex }}
+                            <span class="timeline-tag" style="background: {{ $tagColor }}; color: #000;">{{ $tag }}</span>
+                          {{ end }}
+                        </div>
+                      {{ end }}
+                    </div>
+                  </div>
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+        </div>
+      {{ else if not $years }}
         <div style="
           text-align: center;
           padding: 80px 20px;
