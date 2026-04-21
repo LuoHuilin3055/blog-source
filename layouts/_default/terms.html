@@ -159,11 +159,10 @@
     }
     
     .timeline-tag {
-      font-size: 0.7em;
-      color: #00ffff;
-      background: rgba(0,255,255,0.1);
-      padding: 2px 8px;
-      border-radius: 10px;
+      font-size: 0.75em;
+      padding: 3px 10px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
     
     .category-cloud {
@@ -176,27 +175,23 @@
     
     .category-cloud a {
       display: inline-block;
-      background: #111;
-      color: #fff;
       text-decoration: none;
       padding: 12px 25px;
       border-radius: 30px;
-      border: 1px solid #333;
-      transition: all 0.3s;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     
     .category-cloud a:hover {
-      background: #00ffff;
-      color: #000;
-      border-color: #00ffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
     
     .category-cloud a span {
-      color: #00ffff;
-    }
-    
-    .category-cloud a:hover span {
-      color: #000;
+      margin-left: 5px;
+      font-size: 0.85em;
+      opacity: 0.8;
     }
   </style>
   
@@ -243,10 +238,13 @@
       <!-- 分类/标签云 -->
       {{ if .Data.Terms }}
         <div class="category-cloud">
-          {{ range .Data.Terms.Alphabetical }}
-          <a href="{{ .Page.RelPermalink }}">
-            {{ .Page.Title }} <span>({{ .Count }})</span>
-          </a>
+          {{ $colors := slice "#00ffff" "#a5b4fc" "#50fa7b" "#ffb86c" "#ff79c6" "#bd93f9" "#ff5555" "#8be9fd" "#f1fa8c" "#6272a4" }}
+          {{ range $index, $term := .Data.Terms.Alphabetical }}
+            {{ $colorIndex := mod $index (len $colors) }}
+            {{ $tagColor := index $colors $colorIndex }}
+            <a href="{{ $term.Page.RelPermalink }}" style="background: {{ $tagColor }}; color: #000;">
+              {{ $term.Page.Title }} <span>({{ $term.Count }})</span>
+            </a>
           {{ end }}
         </div>
       {{ end }}
@@ -285,9 +283,12 @@
                       <div class="timeline-item-date">{{ dateFormat "2006-01-02" .Date }}</div>
                       <h4 class="timeline-item-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
                       {{ if .Params.tags }}
+                        {{ $colors := slice "#00ffff" "#a5b4fc" "#50fa7b" "#ffb86c" "#ff79c6" "#bd93f9" "#ff5555" "#8be9fd" "#f1fa8c" "#6272a4" }}
                         <div class="timeline-tags">
-                          {{ range .Params.tags }}
-                            <span class="timeline-tag">{{ . }}</span>
+                          {{ range $index, $tag := .Params.tags }}
+                            {{ $colorIndex := mod $index (len $colors) }}
+                            {{ $tagColor := index $colors $colorIndex }}
+                            <span class="timeline-tag" style="background: {{ $tagColor }}; color: #000;">{{ $tag }}</span>
                           {{ end }}
                         </div>
                       {{ end }}
