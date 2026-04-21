@@ -26,8 +26,7 @@
     <h2 style="font-size: 2em; color: #00ffff; margin-bottom: 30px;">📝 最新文章</h2>
     
     <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center;">
-      {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts") }}
-      {{ range $paginator.Pages }}
+      {{ range first 3 (where .Site.RegularPages "Type" "posts") }}
       <div style="
         width: 320px;
         background: #111;
