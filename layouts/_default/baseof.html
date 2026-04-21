@@ -203,61 +203,61 @@
                 }
             });
             
-            // 烟花效果 - 改进版
+            // 烟花效果 - 性能优化版
             function createFireworks(x, y) {
                 const colors = ['#00ffff', '#a5b4fc', '#ffffff', '#ff79c6', '#50fa7b', '#bd93f9', '#ffb86c', '#ff5555'];
-                const particles = 30;
+                const particles = 15;
+                const maxParticles = 100;
+                let currentParticles = 0;
                 
                 for (let i = 0; i < particles; i++) {
+                    if (currentParticles >= maxParticles) break;
+                    
                     const particle = document.createElement('div');
-                    particle.style.position = 'fixed';
-                    particle.style.left = x + 'px';
-                    particle.style.top = y + 'px';
-                    particle.style.width = Math.random() * 6 + 2 + 'px';
-                    particle.style.height = Math.random() * 6 + 2 + 'px';
-                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    particle.style.borderRadius = '50%';
-                    particle.style.pointerEvents = 'none';
-                    particle.style.zIndex = '9999';
-                    particle.style.opacity = '0';
-                    particle.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px ${Math.random() * 5 + 2}px ${colors[Math.floor(Math.random() * colors.length)]}`;
-                    particle.style.transform = 'scale(0)';
+                    const size = Math.random() * 4 + 2;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    particle.style.cssText = `
+                        position: fixed;
+                        left: ${x}px;
+                        top: ${y}px;
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: ${color};
+                        border-radius: 50%;
+                        pointer-events: none;
+                        z-index: 9999;
+                        box-shadow: 0 0 ${size * 2}px ${color};
+                    `;
                     
                     document.body.appendChild(particle);
+                    currentParticles++;
                     
                     const angle = (Math.PI * 2 / particles) * i + Math.random() * 0.2;
-                    const distance = 60 + Math.random() * 40;
-                    const velocityX = Math.cos(angle) * distance;
-                    const velocityY = Math.sin(angle) * distance;
+                    const distance = 50 + Math.random() * 30;
+                    const vx = Math.cos(angle) * distance * 0.06;
+                    const vy = Math.sin(angle) * distance * 0.06;
                     
-                    let currentX = 0;
-                    let currentY = 0;
-                    let alpha = 0;
-                    let scale = 0;
-                    let gravity = 0.5;
+                    let px = 0, py = 0, alpha = 1, gravity = 0.3;
                     
                     function animate() {
-                        currentX += velocityX * 0.08;
-                        currentY += velocityY * 0.08 + gravity;
-                        gravity += 0.05;
-                        alpha = Math.min(alpha + 0.1, 1);
-                        scale = Math.min(scale + 0.1, 1);
+                        px += vx;
+                        py += vy + gravity;
+                        gravity += 0.03;
+                        alpha -= 0.025;
                         
-                        if (alpha > 0.7) {
-                            alpha -= 0.03;
-                        }
-                        
-                        particle.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
-                        particle.style.opacity = alpha;
-                        
-                        if (alpha > 0) {
-                            requestAnimationFrame(animate);
-                        } else {
+                        if (alpha <= 0) {
                             document.body.removeChild(particle);
+                            currentParticles--;
+                            return;
                         }
+                        
+                        particle.style.transform = `translate(${px}px, ${py}px)`;
+                        particle.style.opacity = alpha;
+                        requestAnimationFrame(animate);
                     }
                     
-                    animate();
+                    requestAnimationFrame(animate);
                 }
             }
             
