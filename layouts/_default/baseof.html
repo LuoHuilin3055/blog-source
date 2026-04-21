@@ -203,11 +203,11 @@
                 }
             });
             
-            // 烟花效果 - 第二版（带性能优化）
+            // 烟花效果 - 视觉效果保持版
             function createFireworks(x, y) {
                 const colors = ['#00ffff', '#a5b4fc', '#ffffff', '#ff79c6', '#50fa7b', '#bd93f9', '#ffb86c', '#ff5555'];
                 const particles = 25;
-                const maxParticles = 150;
+                const maxParticles = 120;
                 let currentParticles = 0;
                 
                 for (let i = 0; i < particles; i++) {
@@ -269,8 +269,18 @@
                 }
             }
             
+            // 点击频率限制
+            let lastClickTime = 0;
+            const clickCooldown = 200; // 200ms冷却时间
+            
             // 为页面添加点击事件
             document.addEventListener('click', function(e) {
+                const currentTime = Date.now();
+                if (currentTime - lastClickTime < clickCooldown) {
+                    return;
+                }
+                lastClickTime = currentTime;
+                
                 // 避免在lightbox上触发
                 if (!lightbox.classList.contains('active')) {
                     createFireworks(e.clientX, e.clientY);
