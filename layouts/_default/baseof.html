@@ -203,57 +203,50 @@
                 }
             });
             
-            // 烟花效果 - 性能优化版
+            // 烟花效果 - 彩色放射状
             function createFireworks(x, y) {
-                const colors = ['#00ffff', '#a5b4fc', '#ffffff', '#ff79c6', '#50fa7b', '#bd93f9', '#ffb86c', '#ff5555'];
-                const particles = 15;
-                const maxParticles = 100;
-                let currentParticles = 0;
+                const colors = ['#ff79c6', '#00ffff', '#a5b4fc', '#50fa7b', '#ffb86c', '#ff5555', '#bd93f9'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const particles = 24;
                 
                 for (let i = 0; i < particles; i++) {
-                    if (currentParticles >= maxParticles) break;
-                    
                     const particle = document.createElement('div');
-                    const size = Math.random() * 4 + 2;
-                    const color = colors[Math.floor(Math.random() * colors.length)];
                     
                     particle.style.cssText = `
                         position: fixed;
                         left: ${x}px;
                         top: ${y}px;
-                        width: ${size}px;
-                        height: ${size}px;
+                        width: 3px;
+                        height: 3px;
                         background: ${color};
                         border-radius: 50%;
                         pointer-events: none;
                         z-index: 9999;
-                        box-shadow: 0 0 ${size * 2}px ${color};
+                        box-shadow: 0 0 6px 2px ${color};
                     `;
                     
                     document.body.appendChild(particle);
-                    currentParticles++;
                     
-                    const angle = (Math.PI * 2 / particles) * i + Math.random() * 0.2;
-                    const distance = 50 + Math.random() * 30;
-                    const vx = Math.cos(angle) * distance * 0.06;
-                    const vy = Math.sin(angle) * distance * 0.06;
+                    const angle = (Math.PI * 2 / particles) * i;
+                    const speed = 3 + Math.random() * 2;
+                    const vx = Math.cos(angle) * speed;
+                    const vy = Math.sin(angle) * speed;
                     
-                    let px = 0, py = 0, alpha = 1, gravity = 0.3;
+                    let px = 0, py = 0;
+                    let life = 1;
                     
                     function animate() {
                         px += vx;
-                        py += vy + gravity;
-                        gravity += 0.03;
-                        alpha -= 0.025;
+                        py += vy;
+                        life -= 0.02;
                         
-                        if (alpha <= 0) {
+                        if (life <= 0) {
                             document.body.removeChild(particle);
-                            currentParticles--;
                             return;
                         }
                         
-                        particle.style.transform = `translate(${px}px, ${py}px)`;
-                        particle.style.opacity = alpha;
+                        particle.style.transform = `translate(${px}px, ${py}px) scale(${life})`;
+                        particle.style.opacity = life;
                         requestAnimationFrame(animate);
                     }
                     
