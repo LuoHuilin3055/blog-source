@@ -260,8 +260,8 @@
       
       {{ $years := $pages.GroupByDate "2006" }}
       
-      <!-- 只在分类页面显示时间线，标签页面不显示 -->
-      {{ if and $years (eq .Data.Plural "categories") }}
+      <!-- 在分类和标签页面都显示时间线 -->
+      {{ if and $years (or (eq .Data.Plural "categories") (eq .Data.Plural "tags")) }}
         <div class="timeline-container">
           <!-- 归档头部 -->
           <div class="timeline-header">
