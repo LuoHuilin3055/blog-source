@@ -295,6 +295,7 @@
               ">
                 <!-- 多个同心环 - 显示文章最多的5个标签，半径与文章数量成正比 -->
                 {{ $topTerms := .Data.Terms.ByCount | first 5 }}
+                {{ $totalPosts := len .Site.RegularPages }}
                 {{ $maxCount := 0 }}
                 {{ range $topTerms }}
                   {{ if gt .Count $maxCount }}
@@ -304,25 +305,47 @@
                 
                 {{ $colors := slice "#00ffff" "#00d4ff" "#00b8ff" "#00a8ff" "#0096ff" }}
                 {{ range $index, $term := $topTerms }}
-                  {{ $percentage := div (float $term.Count) (float $maxCount) }}
-                  {{ $radius := add 40 (mul $percentage 80) }}
+                  {{ $percentage := div (float $term.Count) (float $totalPosts) }}
+                  {{ $angle := mul $percentage 360 }}
+                  {{ $radius := add 40 (mul (div (float $term.Count) (float $maxCount)) 80) }}
                   {{ $color := index $colors $index }}
                   {{ $borderWidth := 8 }}
                   
-                  <!-- 环形段 -->
+                  <!-- 环形段 - 顺时针方向，从顶部开始 -->
                   <div style="
                     width: {{ $radius }}px;
                     height: {{ $radius }}px;
                     border: {{ $borderWidth }}px solid {{ $color }};
                     border-radius: 50%;
                     position: absolute;
-                    border-top-color: transparent;
-                    border-right-color: transparent;
-                    border-bottom-color: {{ $color }};
-                    border-left-color: {{ $color }};
-                    transform: rotate(45deg);
+                    clip: rect(0, {{ div $radius 2 }}px, {{ $radius }}px, 0);
+                    transform: rotate(0deg);
                     opacity: 0.8;
                   " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
+                  
+                  {{ if gt $angle 180 }}
+                    <div style="
+                      width: {{ $radius }}px;
+                      height: {{ $radius }}px;
+                      border: {{ $borderWidth }}px solid {{ $color }};
+                      border-radius: 50%;
+                      position: absolute;
+                      clip: rect(0, {{ $radius }}px, {{ $radius }}px, {{ div $radius 2 }}px);
+                      transform: rotate(180deg);
+                      opacity: 0.8;
+                    " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
+                  {{ else }}
+                    <div style="
+                      width: {{ $radius }}px;
+                      height: {{ $radius }}px;
+                      border: {{ $borderWidth }}px solid {{ $color }};
+                      border-radius: 50%;
+                      position: absolute;
+                      clip: rect(0, {{ $radius }}px, {{ $radius }}px, {{ div $radius 2 }}px);
+                      transform: rotate({{ $angle }}deg);
+                      opacity: 0.8;
+                    " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
+                  {{ end }}
                 {{ end }}
                 
                 <!-- 中心文字 -->
