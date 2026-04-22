@@ -22,6 +22,51 @@
   </div>
   {{ end }}
 
+  <!-- 按钮区域 -->
+  <div style="
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 0 auto 60px;
+    max-width: 800px;
+  ">
+    <!-- 随机一篇按钮 -->
+    <button onclick="window.location.href = '/myblog/random'" style="
+      background: linear-gradient(135deg, #00ffff, #a5b4fc);
+      color: #000;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 30px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,255,255,0.3);
+    " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(0,255,255,0.5)';" 
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.3)';">
+      🎲 随机一篇
+    </button>
+    
+    <!-- 关于我按钮 -->
+    <a href="/myblog/about" style="
+      background: linear-gradient(135deg, #a5b4fc, #00ffff);
+      color: #000;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 30px;
+      font-size: 1.1em;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,255,255,0.3);
+    " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(0,255,255,0.5)';" 
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.3)';">
+      👤 关于我
+    </a>
+  </div>
+
   <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; background-color: #000000;">
     <h2 style="font-size: 2em; color: #00ffff; margin-bottom: 30px;">📝 最新文章</h2>
     
@@ -62,50 +107,6 @@
         ">阅读全文 →</a>
       </div>
       {{ end }}
-    </div>
-    
-    <!-- 按钮区域 -->
-    <div style="
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-top: 60px;
-    ">
-      <!-- 随机一篇按钮 -->
-      <button onclick="window.location.href = '/myblog/random'" style="
-        background: linear-gradient(135deg, #00ffff, #a5b4fc);
-        color: #000;
-        border: none;
-        padding: 15px 40px;
-        border-radius: 30px;
-        font-size: 1.1em;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,255,255,0.3);
-      " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(0,255,255,0.5)';" 
-         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.3)';">
-        🎲 随机一篇
-      </button>
-      
-      <!-- 关于我按钮 -->
-      <a href="/myblog/about" style="
-        background: linear-gradient(135deg, #a5b4fc, #00ffff);
-        color: #000;
-        border: none;
-        padding: 15px 40px;
-        border-radius: 30px;
-        font-size: 1.1em;
-        font-weight: bold;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,255,255,0.3);
-      " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(0,255,255,0.5)';" 
-         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,255,255,0.3)';">
-        👤 关于我
-      </a>
     </div>
   </div>
 {{ end }}
