@@ -4,6 +4,7 @@ date: 2026-04-02
 tags:
   - CTF
   - 笔记
+  - 大一下
 lastmod: 2026-04-02
 draft:
 cover: images/10.jpg
@@ -64,3 +65,6 @@ python Deformed-Image-Restorer.py -i demo.png
 ```
 
 # `LSB`图片隐写
+## 前言：
+作为一个不是十分勤奋的仍在入门苦苦挣扎的`CTFer`，之前做了几道`Misc`的图片题（因为简单），我的操作仅限于“打开随波逐流 --> 图片及文件隐写 --> `binwalk`文件提取”，最多延伸到用`010`打开修改文件头，这学期决定真的真的真的要入门`CTF`了，现在准备学一下之前看见就跑的`LSB`隐写题  
+另外，本来是想下载`Stegsolve`的，但我的能力有限，下载的全是精简版的

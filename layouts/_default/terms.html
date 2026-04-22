@@ -280,9 +280,10 @@
           padding: 40px;
           margin-bottom: 40px;
           animation: fadeInDown 0.8s ease 0.2s both;
+          position: relative;
         ">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px;">
-            <!-- 圆形统计 -->
+            <!-- 圆形统计 - 显示文章最多的4个标签 -->
             <div style="flex: 0 0 auto;">
               <div style="
                 width: 120px;
@@ -300,19 +301,48 @@
                   border-radius: 50%;
                   position: absolute;
                 "></div>
-                <!-- 圆形进度 -->
-                <div style="
-                  width: 100%;
-                  height: 100%;
-                  border: 6px solid #00ffff;
-                  border-radius: 50%;
-                  position: absolute;
-                  border-top-color: transparent;
-                  border-right-color: transparent;
-                  border-bottom-color: #00ffff;
-                  border-left-color: #00ffff;
-                  transform: rotate(45deg);
-                "></div>
+                
+                <!-- 环形进度 - 显示文章最多的4个标签 -->
+                {{ $topTerms := .Data.Terms.ByCount | first 4 }}
+                {{ $totalCount := 0 }}
+                {{ range $topTerms }}
+                  {{ $totalCount = add $totalCount .Count }}
+                {{ end }}
+                
+                {{ $startAngle := 0 }}
+                {{ range $index, $term := $topTerms }}
+                  {{ $percentage := div (float $term.Count) (float $totalCount) }}
+                  {{ $angle := mul $percentage 360 }}
+                  {{ $endAngle := add $startAngle $angle }}
+                  {{ $colors := slice "#00ffff" "#00a8ff" "#0066ff" "#0030ff" }}
+                  {{ $color := index $colors $index }}
+                  
+                  <!-- 环形段 -->
+                  <div style="
+                    width: 100%;
+                    height: 100%;
+                    border: 6px solid {{ $color }};
+                    border-radius: 50%;
+                    position: absolute;
+                    clip: rect(0, 120px, 120px, 60px);
+                    transform: rotate({{ $startAngle }}deg);
+                  " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
+                  
+                  {{ if gt $angle 180 }}
+                    <div style="
+                      width: 100%;
+                      height: 100%;
+                      border: 6px solid {{ $color }};
+                      border-radius: 50%;
+                      position: absolute;
+                      clip: rect(0, 60px, 120px, 0);
+                      transform: rotate({{ add $startAngle 180 }}deg);
+                    " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
+                  {{ end }}
+                  
+                  {{ $startAngle = $endAngle }}
+                {{ end }}
+                
                 <!-- 中心文字 -->
                 <div style="text-align: center;">
                   <div style="font-size: 1.5em; font-weight: bold; color: #00ffff;">{{ len .Data.Terms }}</div>
@@ -321,19 +351,49 @@
               </div>
             </div>
             
-            <!-- 波形图 -->
+            <!-- 柱状图 - 与下面标签一一对应 -->
             <div style="flex: 1; min-width: 300px;">
               <div style="display: flex; align-items: flex-end; justify-content: space-between; height: 80px; gap: 8px;">
-                {{ range $i, $ := (seq 20) }}
-                  {{ $heights := slice 8 8 8 8 8 8 8 8 8 8 24 24 24 24 24 40 40 40 64 64 }}
-                  {{ $height := index $heights $i }}
-                  <div style="
+                {{ $sortedTerms := .Data.Terms.Alphabetical }}
+                {{ $maxCount := 0 }}
+                {{ range .Data.Terms.ByCount }}
+                  {{ if gt .Count $maxCount }}
+                    {{ $maxCount = .Count }}
+                  {{ end }}
+                {{ end }}
+                {{ range $index, $term := $sortedTerms }}
+                  {{ $height := mul (div (float $term.Count) (float (add $maxCount 1))) 70 }}
+                  {{ $colors := slice "#00ffff" "#00d4ff" "#00b8ff" "#00a8ff" "#0096ff" "#0084ff" "#0072ff" "#0060ff" "#0048ff" "#0030ff" }}
+                  {{ $colorIndex := mod $index (len $colors) }}
+                  {{ $color := index $colors $colorIndex }}
+                  <a href="{{ $term.Page.RelPermalink }}" style="
                     flex: 1;
-                    background: linear-gradient(to top, #00ffff, #0066ff);
+                    background: linear-gradient(to top, {{ $color }}, #0066ff);
                     border-radius: 2px 2px 0 0;
-                    transition: height 0.5s ease;
-                    height: {{ $height }}px;
-                  "></div>
+                    transition: all 0.3s ease;
+                    height: {{ add $height 10 }}px;
+                    cursor: pointer;
+                    position: relative;
+                  " title="{{ $term.Page.Title }} {{ $term.Count }}篇" onmouseover="this.style.opacity='0.8'; this.style.transform='scaleY(1.05)';" onmouseout="this.style.opacity='1'; this.style.transform='scaleY(1)';">
+                    <!-- 悬停提示 -->
+                    <div style="
+                      position: absolute;
+                      top: -30px;
+                      left: 50%;
+                      transform: translateX(-50%);
+                      background: rgba(0,0,0,0.8);
+                      color: #fff;
+                      padding: 4px 8px;
+                      border-radius: 4px;
+                      font-size: 0.7em;
+                      white-space: nowrap;
+                      opacity: 0;
+                      transition: opacity 0.2s ease;
+                      z-index: 10;
+                    " onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='0';">
+                      {{ $term.Page.Title }} {{ $term.Count }}篇
+                    </div>
+                  </a>
                 {{ end }}
               </div>
             </div>
