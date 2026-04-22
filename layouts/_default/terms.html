@@ -312,7 +312,7 @@
                   {{ $borderWidth := 8 }}
                   
                   <!-- 环形段 - 顺时针方向，从顶部开始 -->
-                  <div class="ring-segment" data-index="{{ $index }}" style="
+                  <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
                     width: {{ $radius }}px;
                     height: {{ $radius }}px;
                     border: {{ $borderWidth }}px solid {{ $color }};
@@ -326,7 +326,7 @@
                   " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
                   
                   {{ if gt $angle 180 }}
-                    <div class="ring-segment" data-index="{{ $index }}" style="
+                    <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
                       width: {{ $radius }}px;
                       height: {{ $radius }}px;
                       border: {{ $borderWidth }}px solid {{ $color }};
@@ -339,7 +339,7 @@
                       cursor: pointer;
                     " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
                   {{ else }}
-                    <div class="ring-segment" data-index="{{ $index }}" style="
+                    <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
                       width: {{ $radius }}px;
                       height: {{ $radius }}px;
                       border: {{ $borderWidth }}px solid {{ $color }};
@@ -486,23 +486,20 @@
           });
           
           // 为每个环形段添加事件监听器
-          const topTerms = {{ .Data.Terms.ByCount | first 5 | jsonify }};
           ringSegments.forEach((segment) => {
             segment.addEventListener('mouseover', function() {
-              const index = parseInt(this.getAttribute('data-index'));
-              // 突出显示环形段
+              const index = this.getAttribute('data-index');
+              const termName = this.getAttribute('data-term');
+              // 突出显示当前环形段
               ringSegments.forEach((seg) => {
-                if (seg.getAttribute('data-index') === this.getAttribute('data-index')) {
+                if (seg.getAttribute('data-index') === index) {
                   seg.style.opacity = '1';
                   seg.style.transform = 'scale(1.05)';
                   seg.style.boxShadow = '0 0 15px rgba(0,255,255,0.5)';
-                } else {
-                  seg.style.opacity = '0.4';
                 }
               });
               
               // 高亮对应的标签
-              const termName = topTerms[index].name;
               tags.forEach((tag) => {
                 if (tag.textContent.includes(termName)) {
                   tag.style.background = 'rgba(0,255,255,0.1)';
@@ -512,18 +509,24 @@
             });
             
             segment.addEventListener('mouseout', function() {
-              // 恢复环形段样式
+              // 恢复所有环形段样式
               ringSegments.forEach((seg) => {
                 seg.style.opacity = '0.8';
                 seg.style.transform = 'scale(1)';
                 seg.style.boxShadow = 'none';
               });
               
-              // 恢复标签样式
+              // 恢复所有标签样式
               tags.forEach((tag) => {
                 tag.style.background = 'rgba(0,0,0,0.4)';
                 tag.style.borderColor = 'rgba(0,255,255,0.2)';
               });
+            });
+            
+            // 添加点击事件，跳转到对应标签页面
+            segment.addEventListener('click', function() {
+              const url = this.getAttribute('data-url');
+              window.location.href = url;
             });
           });
         </script>
