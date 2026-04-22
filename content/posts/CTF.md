@@ -29,15 +29,15 @@ print(result)
 `flag{dark logic}`
 
 ---
-# `PNG`图片隐写
-## 判断类型
+
+# 判断图片类型
 - 给出了一个`admin.exe`文件，我们需要先判断其文件类型
 	- 先用`binwalk`判断`binwalk admin.exe`得出为`png`文件
 	- 再使用`GHEX`来进行十六进制验证`ghex admin.exe`,得到`89 50 4E 47 0D 0A 1A 0A`的`PNG`文件头
 - 于是我们将后缀改为`PNG`，得到一张二维码，用`QRCode`扫描即可得到flag
 	- `mv admin.exe admin.png`
 ---
-## 倒转文件byte
+# 倒转文件byte
 - 用`binwalk`判断文件类型为`jpg`，于是用`GHEX`打开
 - 打开后并没有在开头看见`PNG`文件头，翻到最下面看见有倒转过来的`PNG`与`IHDR`，于是使用脚本将其翻转，得到flag
 ### EXP
@@ -48,7 +48,7 @@ print(result)
 ```
 ---
 
-## 添加文件头
+# 添加文件头
 - 先用`binwalk`判断文件类型为`PNG`，用`GHEX`打开
 ```bash
 binwalk no_hex
@@ -58,7 +58,9 @@ ghex no_hex
 - 另存为`CTRL + SHIFT + S`
 ---
 
-## 修改宽高
+# 修改宽高
 ```python
 python Deformed-Image-Restorer.py -i demo.png
 ```
+
+# `LSB`图片隐写

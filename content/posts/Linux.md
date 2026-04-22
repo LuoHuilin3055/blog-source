@@ -156,23 +156,4 @@ ghex -r file.bin        # 只读打开
 ghex -n 1024 new.bin    # 创建新文件（1024字节）
 ```
 
-# `Stegsolve`使用指南
-## 1‍⃣打开工具
-```bash
-java -jar Stegsolve.jar
-```
-这一串命令比较长，我们可以做以下操作
-```bash
-sudo mv Stegsolve.jar /opt/stegsolve.jar
-echo 'alias stegsolve="java -jar /opt/stegsolve.jar"' >> ~/.zshrc
-source ~/.zshrc
-```
-之后就可以直接输入打开了
-```bash
-stegsolve
-```
-
-## 2‍⃣颜色通道切换
-- 打开图片后的主界面，用来寻找一些比较明显的隐藏内容（文字、二维码、水印）
-
-## 3‍⃣位平面分析
+# 
