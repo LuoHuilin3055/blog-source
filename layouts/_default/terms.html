@@ -283,7 +283,7 @@
           position: relative;
         ">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px;">
-            <!-- 圆形统计 - 显示文章最多的4个标签 -->
+            <!-- 圆形统计 - 简洁样式 -->
             <div style="flex: 0 0 auto;">
               <div style="
                 width: 120px;
@@ -293,59 +293,30 @@
                 align-items: center;
                 justify-content: center;
               ">
-                <!-- 圆形背景 -->
+                <!-- 环形背景 -->
                 <div style="
                   width: 100%;
                   height: 100%;
-                  border: 6px solid rgba(0,255,255,0.2);
+                  border: 8px solid rgba(255,255,255,0.1);
                   border-radius: 50%;
                   position: absolute;
                 "></div>
-                
-                <!-- 环形进度 - 显示文章最多的4个标签 -->
-                {{ $topTerms := .Data.Terms.ByCount | first 4 }}
-                {{ $totalCount := 0 }}
-                {{ range $topTerms }}
-                  {{ $totalCount = add $totalCount .Count }}
-                {{ end }}
-                
-                {{ $startAngle := 0 }}
-                {{ range $index, $term := $topTerms }}
-                  {{ $percentage := div (float $term.Count) (float $totalCount) }}
-                  {{ $angle := mul $percentage 360 }}
-                  {{ $endAngle := add $startAngle $angle }}
-                  {{ $colors := slice "#00ffff" "#00a8ff" "#0066ff" "#0030ff" }}
-                  {{ $color := index $colors $index }}
-                  
-                  <!-- 环形段 -->
-                  <div style="
-                    width: 100%;
-                    height: 100%;
-                    border: 6px solid {{ $color }};
-                    border-radius: 50%;
-                    position: absolute;
-                    clip: rect(0, 120px, 120px, 60px);
-                    transform: rotate({{ $startAngle }}deg);
-                  " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
-                  
-                  {{ if gt $angle 180 }}
-                    <div style="
-                      width: 100%;
-                      height: 100%;
-                      border: 6px solid {{ $color }};
-                      border-radius: 50%;
-                      position: absolute;
-                      clip: rect(0, 60px, 120px, 0);
-                      transform: rotate({{ add $startAngle 180 }}deg);
-                    " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
-                  {{ end }}
-                  
-                  {{ $startAngle = $endAngle }}
-                {{ end }}
-                
+                <!-- 环形进度 -->
+                <div style="
+                  width: 100%;
+                  height: 100%;
+                  border: 8px solid #fff;
+                  border-radius: 50%;
+                  position: absolute;
+                  border-top-color: transparent;
+                  border-right-color: transparent;
+                  border-bottom-color: #fff;
+                  border-left-color: #fff;
+                  transform: rotate(45deg);
+                "></div>
                 <!-- 中心文字 -->
                 <div style="text-align: center;">
-                  <div style="font-size: 1.5em; font-weight: bold; color: #00ffff;">{{ len .Data.Terms }}</div>
+                  <div style="font-size: 1.5em; font-weight: bold; color: #fff;">{{ len .Data.Terms }}</div>
                   <div style="font-size: 0.7em; color: #888;">个标签</div>
                 </div>
               </div>
@@ -366,7 +337,7 @@
                   {{ $colors := slice "#00ffff" "#00d4ff" "#00b8ff" "#00a8ff" "#0096ff" "#0084ff" "#0072ff" "#0060ff" "#0048ff" "#0030ff" }}
                   {{ $colorIndex := mod $index (len $colors) }}
                   {{ $color := index $colors $colorIndex }}
-                  <a href="{{ $term.Page.RelPermalink }}" style="
+                  <a href="{{ $term.Page.RelPermalink }}" class="tag-bar" style="
                     flex: 1;
                     background: linear-gradient(to top, {{ $color }}, #0066ff);
                     border-radius: 2px 2px 0 0;
@@ -413,7 +384,7 @@
             {{ range $index, $term := .Data.Terms.Alphabetical }}
               {{ $colorIndex := mod $index (len $colors) }}
               {{ $tagColor := index $colors $colorIndex }}
-              <a href="{{ $term.Page.RelPermalink }}" style="
+              <a href="{{ $term.Page.RelPermalink }}" id="tag-{{ $index }}" style="
                 display: inline-flex;
                 align-items: center;
                 justify-content: space-between;
@@ -448,6 +419,31 @@
             {{ end }}
           </div>
         </div>
+        
+        <script>
+          // 获取所有柱形图和标签
+          const bars = document.querySelectorAll('.tag-bar');
+          const tags = document.querySelectorAll('[id^="tag-"]');
+          
+          // 为每个柱形图添加事件监听器
+          bars.forEach((bar, index) => {
+            bar.addEventListener('mouseover', function() {
+              // 高亮对应的标签
+              if (tags[index]) {
+                tags[index].style.background = 'rgba(0,255,255,0.1)';
+                tags[index].style.borderColor = '#00ffff';
+              }
+            });
+            
+            bar.addEventListener('mouseout', function() {
+              // 恢复标签样式
+              if (tags[index]) {
+                tags[index].style.background = 'rgba(0,0,0,0.4)';
+                tags[index].style.borderColor = 'rgba(0,255,255,0.2)';
+              }
+            });
+          });
+        </script>
       {{ end }}
       
       <!-- 文章列表 - 按年份和月份组织 -->
