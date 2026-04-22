@@ -293,19 +293,20 @@
                 align-items: center;
                 justify-content: center;
               ">
-                <!-- 多个同心环 - 显示文章最多的5个标签 -->
+                <!-- 多个同心环 - 显示文章最多的5个标签，半径与文章数量成正比 -->
                 {{ $topTerms := .Data.Terms.ByCount | first 5 }}
-                {{ $totalCount := 0 }}
+                {{ $maxCount := 0 }}
                 {{ range $topTerms }}
-                  {{ $totalCount = add $totalCount .Count }}
+                  {{ if gt .Count $maxCount }}
+                    {{ $maxCount = .Count }}
+                  {{ end }}
                 {{ end }}
                 
                 {{ $colors := slice "#00ffff" "#00d4ff" "#00b8ff" "#00a8ff" "#0096ff" }}
                 {{ range $index, $term := $topTerms }}
-                  {{ $percentage := div (float $term.Count) (float $totalCount) }}
-                  {{ $angle := mul $percentage 360 }}
+                  {{ $percentage := div (float $term.Count) (float $maxCount) }}
+                  {{ $radius := add 40 (mul $percentage 80) }}
                   {{ $color := index $colors $index }}
-                  {{ $radius := sub 120 (mul $index 16) }}
                   {{ $borderWidth := 8 }}
                   
                   <!-- 环形段 -->
