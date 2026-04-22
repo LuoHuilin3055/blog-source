@@ -312,7 +312,7 @@
                   {{ $borderWidth := 8 }}
                   
                   <!-- 环形段 - 顺时针方向，从顶部开始 -->
-                  <div style="
+                  <div class="ring-segment" data-index="{{ $index }}" style="
                     width: {{ $radius }}px;
                     height: {{ $radius }}px;
                     border: {{ $borderWidth }}px solid {{ $color }};
@@ -321,10 +321,12 @@
                     clip: rect(0, {{ div $radius 2 }}px, {{ $radius }}px, 0);
                     transform: rotate(0deg);
                     opacity: 0.8;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
                   " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
                   
                   {{ if gt $angle 180 }}
-                    <div style="
+                    <div class="ring-segment" data-index="{{ $index }}" style="
                       width: {{ $radius }}px;
                       height: {{ $radius }}px;
                       border: {{ $borderWidth }}px solid {{ $color }};
@@ -333,9 +335,11 @@
                       clip: rect(0, {{ $radius }}px, {{ $radius }}px, {{ div $radius 2 }}px);
                       transform: rotate(180deg);
                       opacity: 0.8;
+                      transition: all 0.3s ease;
+                      cursor: pointer;
                     " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
                   {{ else }}
-                    <div style="
+                    <div class="ring-segment" data-index="{{ $index }}" style="
                       width: {{ $radius }}px;
                       height: {{ $radius }}px;
                       border: {{ $borderWidth }}px solid {{ $color }};
@@ -344,6 +348,8 @@
                       clip: rect(0, {{ $radius }}px, {{ $radius }}px, {{ div $radius 2 }}px);
                       transform: rotate({{ $angle }}deg);
                       opacity: 0.8;
+                      transition: all 0.3s ease;
+                      cursor: pointer;
                     " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
                   {{ end }}
                 {{ end }}
@@ -455,8 +461,9 @@
         </div>
         
         <script>
-          // 获取所有柱形图和标签
+          // 获取所有柱形图、环形段和标签
           const bars = document.querySelectorAll('.tag-bar');
+          const ringSegments = document.querySelectorAll('.ring-segment');
           const tags = document.querySelectorAll('[id^="tag-"]');
           
           // 为每个柱形图添加事件监听器
@@ -475,6 +482,48 @@
                 tags[index].style.background = 'rgba(0,0,0,0.4)';
                 tags[index].style.borderColor = 'rgba(0,255,255,0.2)';
               }
+            });
+          });
+          
+          // 为每个环形段添加事件监听器
+          const topTerms = {{ .Data.Terms.ByCount | first 5 | jsonify }};
+          ringSegments.forEach((segment) => {
+            segment.addEventListener('mouseover', function() {
+              const index = parseInt(this.getAttribute('data-index'));
+              // 突出显示环形段
+              ringSegments.forEach((seg) => {
+                if (seg.getAttribute('data-index') === this.getAttribute('data-index')) {
+                  seg.style.opacity = '1';
+                  seg.style.transform = 'scale(1.05)';
+                  seg.style.boxShadow = '0 0 15px rgba(0,255,255,0.5)';
+                } else {
+                  seg.style.opacity = '0.4';
+                }
+              });
+              
+              // 高亮对应的标签
+              const termName = topTerms[index].name;
+              tags.forEach((tag) => {
+                if (tag.textContent.includes(termName)) {
+                  tag.style.background = 'rgba(0,255,255,0.1)';
+                  tag.style.borderColor = '#00ffff';
+                }
+              });
+            });
+            
+            segment.addEventListener('mouseout', function() {
+              // 恢复环形段样式
+              ringSegments.forEach((seg) => {
+                seg.style.opacity = '0.8';
+                seg.style.transform = 'scale(1)';
+                seg.style.boxShadow = 'none';
+              });
+              
+              // 恢复标签样式
+              tags.forEach((tag) => {
+                tag.style.background = 'rgba(0,0,0,0.4)';
+                tag.style.borderColor = 'rgba(0,255,255,0.2)';
+              });
             });
           });
         </script>
