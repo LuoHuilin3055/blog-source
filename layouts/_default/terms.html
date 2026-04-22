@@ -311,47 +311,18 @@
                   {{ $color := index $colors $index }}
                   {{ $borderWidth := 8 }}
                   
-                  <!-- 环形段 - 顺时针方向，从顶部开始 -->
+                  <!-- 完整环形 -->
                   <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
                     width: {{ $radius }}px;
                     height: {{ $radius }}px;
                     border: {{ $borderWidth }}px solid {{ $color }};
                     border-radius: 50%;
                     position: absolute;
-                    clip: rect(0, {{ div $radius 2 }}px, {{ $radius }}px, 0);
-                    transform: rotate(0deg);
                     opacity: 0.8;
                     transition: all 0.3s ease;
                     cursor: pointer;
+                    z-index: {{ sub 10 $index }};
                   " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
-                  
-                  {{ if gt $angle 180 }}
-                    <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
-                      width: {{ $radius }}px;
-                      height: {{ $radius }}px;
-                      border: {{ $borderWidth }}px solid {{ $color }};
-                      border-radius: 50%;
-                      position: absolute;
-                      clip: rect(0, {{ $radius }}px, {{ $radius }}px, {{ div $radius 2 }}px);
-                      transform: rotate(180deg);
-                      opacity: 0.8;
-                      transition: all 0.3s ease;
-                      cursor: pointer;
-                    " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
-                  {{ else }}
-                    <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
-                      width: {{ $radius }}px;
-                      height: {{ $radius }}px;
-                      border: {{ $borderWidth }}px solid {{ $color }};
-                      border-radius: 50%;
-                      position: absolute;
-                      clip: rect(0, {{ $radius }}px, {{ $radius }}px, {{ div $radius 2 }}px);
-                      transform: rotate({{ $angle }}deg);
-                      opacity: 0.8;
-                      transition: all 0.3s ease;
-                      cursor: pointer;
-                    " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
-                  {{ end }}
                 {{ end }}
                 
                 <!-- 中心文字 -->
