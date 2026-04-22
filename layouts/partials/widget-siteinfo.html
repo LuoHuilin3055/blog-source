@@ -53,27 +53,23 @@
     </div>
     
     <!-- 访客数 -->
-    {{ if .Site.Params.visitor_count }}
     <div style="
       display: flex;
       justify-content: space-between;
       align-items: center;
     ">
       <span style="color: #888; font-size: 0.9em;">本站访客数：</span>
-      <span style="color: #fff; font-size: 0.9em;">{{ .Site.Params.visitor_count }}</span>
+      <span id="busuanzi_value_site_uv" style="color: #fff; font-size: 0.9em;">统计中...</span>
     </div>
-    {{ end }}
     
     <!-- 总浏览量 -->
-    {{ if .Site.Params.page_views }}
     <div style="
       display: flex;
       justify-content: space-between;
       align-items: center;
     ">
       <span style="color: #888; font-size: 0.9em;">本站总浏览量：</span>
-      <span style="color: #fff; font-size: 0.9em;">{{ .Site.Params.page_views }}</span>
+      <span id="busuanzi_value_site_pv" style="color: #fff; font-size: 0.9em;">统计中...</span>
     </div>
-    {{ end }}
   </div>
 </div>

@@ -1,16 +1,18 @@
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+<!-- 不蒜子网站统计 -->
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!-- 自定义统计脚本 -->
+<script>
+  // 不蒜子回调函数
+  function busuanziCallback() {
+    // 可以在这里处理统计数据
   }
-  body, html {
-    width: 100%;
-    overflow-x: hidden;
-  }
-  .hero-container {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  }
-</style>
+  
+  // 页面加载完成后执行
+  window.addEventListener('load', function() {
+    // 确保不蒜子脚本已加载
+    if (typeof busuanzi !== 'undefined') {
+      busuanziCallback();
+    }
+  });
+</script>
