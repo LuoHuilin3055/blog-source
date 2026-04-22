@@ -312,7 +312,7 @@
                   {{ $borderWidth := 8 }}
                   
                   <!-- 环形段 - 顺时针方向，从顶部开始 -->
-                  <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
+                  <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" data-original-style="{{ printf "clip: rect(0, %spx, %spx, 0); transform: rotate(0deg);" (div $radius 2) $radius }}" style="
                     width: {{ $radius }}px;
                     height: {{ $radius }}px;
                     border: {{ $borderWidth }}px solid {{ $color }};
@@ -326,7 +326,7 @@
                   " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
                   
                   {{ if gt $angle 180 }}
-                    <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
+                    <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" data-original-style="{{ printf "clip: rect(0, %spx, %spx, %spx); transform: rotate(180deg);" $radius $radius (div $radius 2) }}" style="
                       width: {{ $radius }}px;
                       height: {{ $radius }}px;
                       border: {{ $borderWidth }}px solid {{ $color }};
@@ -339,7 +339,7 @@
                       cursor: pointer;
                     " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
                   {{ else }}
-                    <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
+                    <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" data-original-style="{{ printf "clip: rect(0, %spx, %spx, %spx); transform: rotate(%sdeg);" $radius $radius (div $radius 2) $angle }}" style="
                       width: {{ $radius }}px;
                       height: {{ $radius }}px;
                       border: {{ $borderWidth }}px solid {{ $color }};
@@ -503,6 +503,17 @@
                 seg.style.opacity = '0.8';
                 seg.style.transform = 'scale(1)';
                 seg.style.boxShadow = 'none';
+                // 恢复原始的clip属性
+                const originalStyle = seg.getAttribute('data-original-style');
+                if (originalStyle) {
+                  const styleParts = originalStyle.split('; ');
+                  styleParts.forEach(part => {
+                    const [property, value] = part.split(': ');
+                    if (property === 'clip' && value) {
+                      seg.style.clip = value;
+                    }
+                  });
+                }
               });
               
               // 突出显示当前环形段
@@ -535,6 +546,17 @@
                 seg.style.opacity = '0.8';
                 seg.style.transform = 'scale(1)';
                 seg.style.boxShadow = 'none';
+                // 恢复原始的clip和transform属性
+                const originalStyle = seg.getAttribute('data-original-style');
+                if (originalStyle) {
+                  const styleParts = originalStyle.split('; ');
+                  styleParts.forEach(part => {
+                    const [property, value] = part.split(': ');
+                    if (property && value) {
+                      seg.style[property] = value;
+                    }
+                  });
+                }
               });
               
               // 恢复所有标签样式
