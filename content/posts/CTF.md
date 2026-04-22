@@ -8,6 +8,7 @@ tags:
 lastmod: 2026-04-02
 draft:
 cover: images/10.jpg
+featured: true
 ---
 # 2018 DEFCON Quals ghettohackers: Throwback
 ## 题目描述
