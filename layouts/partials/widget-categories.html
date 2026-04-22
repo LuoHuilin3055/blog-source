@@ -1,0 +1,65 @@
+<!-- 分类 -->
+{{ if .Site.Taxonomies.categories }}
+<div style="
+  background: #1a1d29;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #2a2d3a;
+">
+  <!-- 标题 -->
+  <div style="
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  ">
+    <div style="
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    ">
+      <svg style="width: 20px; height: 20px; color: #3498db;" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+      </svg>
+      <h4 style="
+        color: #fff;
+        font-size: 1.1em;
+        margin: 0;
+        font-weight: 500;
+      ">分类</h4>
+    </div>
+    <a href="/categories/" style="
+      color: #888;
+      text-decoration: none;
+      font-size: 0.9em;
+    ">→</a>
+  </div>
+  
+  <!-- 分类列表 -->
+  <div style="display: flex; flex-direction: column;">
+    {{ range first 10 .Site.Taxonomies.categories.ByCount }}
+    <a href="{{ .Page.Permalink }}" style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #2a2d3a;
+      text-decoration: none;
+      transition: color 0.3s;
+    " onmouseover="this.style.color='#00ffff'" onmouseout="this.style.color=''">
+      <span style="color: #aaa; font-size: 0.95em;">{{ .Page.Title }}</span>
+      <span style="
+        color: #fff;
+        background: #3a3f4f;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.8em;
+        min-width: 20px;
+        text-align: center;
+      ">{{ .Count }}</span>
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

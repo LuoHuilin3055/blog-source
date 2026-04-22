@@ -1,0 +1,54 @@
+<!-- 精选文章 -->
+{{ $featured := where .Site.RegularPages "Params.featured" true }}
+{{ if $featured }}
+<div style="
+  background: #1a1d29;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #2a2d3a;
+">
+  <!-- 标题 -->
+  <div style="
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  ">
+    <svg style="width: 20px; height: 20px; color: #f39c12;" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+    </svg>
+    <h4 style="
+      color: #fff;
+      font-size: 1.1em;
+      margin: 0;
+      font-weight: 500;
+    ">精选文章</h4>
+  </div>
+  
+  <!-- 精选文章列表 -->
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    {{ range first 5 $featured }}
+    <a href="{{ .Permalink }}" style="
+      display: block;
+      padding: 12px;
+      background: #252836;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s;
+    " onmouseover="this.style.background='#2f3444'" onmouseout="this.style.background='#252836'">
+      <div style="
+        color: #fff;
+        font-size: 0.95em;
+        margin-bottom: 5px;
+        line-height: 1.4;
+      ">{{ .Title }}</div>
+      <div style="
+        color: #666;
+        font-size: 0.8em;
+      ">{{ .Date.Format "2006-01-02" }}</div>
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
