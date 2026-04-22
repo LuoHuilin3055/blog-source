@@ -282,7 +282,7 @@
       <!-- 分类/标签云 -->
       {{ if .Data.Terms }}
         <div class="category-cloud">
-          {{ $colors := slice "#00ffff" "#a5b4fc" "#50fa7b" "#ffb86c" "#ff79c6" "#bd93f9" "#ff5555" "#8be9fd" "#f1fa8c" "#6272a4" }}
+          {{ $colors := slice "#00ffff" "#00d4ff" "#00b8ff" "#00a8ff" "#0096ff" "#0084ff" "#0072ff" "#0060ff" "#0048ff" "#0030ff" }}
           {{ range $index, $term := .Data.Terms.Alphabetical }}
             {{ $colorIndex := mod $index (len $colors) }}
             {{ $tagColor := index $colors $colorIndex }}
