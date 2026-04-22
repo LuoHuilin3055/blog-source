@@ -282,58 +282,10 @@
           animation: fadeInDown 0.8s ease 0.2s both;
           position: relative;
         ">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px;">
-            <!-- 环形统计 - 多个同心环，显示文章最多的5个标签 -->
-            <div style="flex: 0 0 auto;">
-              <div style="
-                width: 150px;
-                height: 150px;
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              ">
-                <!-- 多个同心环 - 显示文章最多的5个标签，半径与文章数量成正比 -->
-                {{ $topTerms := .Data.Terms.ByCount | first 5 }}
-                {{ $totalPosts := len .Site.RegularPages }}
-                {{ $maxCount := 0 }}
-                {{ range $topTerms }}
-                  {{ if gt .Count $maxCount }}
-                    {{ $maxCount = .Count }}
-                  {{ end }}
-                {{ end }}
-                
-                {{ $colors := slice "#00ffff" "#00d4ff" "#00b8ff" "#00a8ff" "#0096ff" }}
-                {{ range $index, $term := $topTerms }}
-                  {{ $radius := add 50 (mul (div (float $term.Count) (float $maxCount)) 50) }}
-                  {{ $color := index $colors $index }}
-                  {{ $borderWidth := 6 }}
-                  
-                  <!-- 完整环形 - 颜色表示文章占比 -->
-                  <div class="ring-segment" data-index="{{ $index }}" data-term="{{ $term.Page.Title }}" data-url="{{ $term.Page.RelPermalink }}" style="
-                    width: {{ $radius }}px;
-                    height: {{ $radius }}px;
-                    border: {{ $borderWidth }}px solid {{ $color }};
-                    border-radius: 50%;
-                    position: absolute;
-                    opacity: 0.8;
-                    transition: all 0.3s ease;
-                    cursor: pointer;
-                    z-index: {{ sub 10 $index }};
-                  " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
-                {{ end }}
-                
-                <!-- 中心文字 -->
-                <div style="text-align: center;">
-                  <div style="font-size: 1.8em; font-weight: bold; color: #00ffff;">{{ len .Data.Terms }}</div>
-                  <div style="font-size: 0.8em; color: rgba(255,255,255,0.7);">个标签</div>
-                </div>
-              </div>
-            </div>
-            
+          <div style="display: flex; justify-content: center;">
             <!-- 柱状图 - 与下面标签一一对应 -->
-            <div style="flex: 1; min-width: 300px;">
-              <div style="display: flex; align-items: flex-end; justify-content: space-between; height: 80px; gap: 8px;">
+            <div style="width: 100%; max-width: 800px;">
+              <div style="display: flex; align-items: flex-end; justify-content: space-between; height: 100px; gap: 8px;">
                 {{ $sortedTerms := .Data.Terms.Alphabetical }}
                 {{ $maxCount := 0 }}
                 {{ range .Data.Terms.ByCount }}
@@ -342,7 +294,7 @@
                   {{ end }}
                 {{ end }}
                 {{ range $index, $term := $sortedTerms }}
-                  {{ $height := mul (div (float $term.Count) (float (add $maxCount 1))) 70 }}
+                  {{ $height := mul (div (float $term.Count) (float (add $maxCount 1))) 80 }}
                   {{ $colors := slice "#00ffff" "#00d4ff" "#00b8ff" "#00a8ff" "#0096ff" "#0084ff" "#0072ff" "#0060ff" "#0048ff" "#0030ff" }}
                   {{ $colorIndex := mod $index (len $colors) }}
                   {{ $color := index $colors $colorIndex }}
@@ -430,9 +382,8 @@
         </div>
         
         <script>
-          // 获取所有柱形图、环形段和标签
+          // 获取所有柱形图和标签
           const bars = document.querySelectorAll('.tag-bar');
-          const ringSegments = document.querySelectorAll('.ring-segment');
           const tags = document.querySelectorAll('[id^="tag-"]');
           
           // 为每个柱形图添加事件监听器
@@ -454,78 +405,7 @@
             });
           });
           
-          // 为每个环形段保存原始样式
-          ringSegments.forEach((segment) => {
-            segment.originalStyle = {
-              opacity: segment.style.opacity || '0.8',
-              transform: segment.style.transform || 'scale(1)',
-              boxShadow: segment.style.boxShadow || 'none',
-              clip: segment.style.clip
-            };
-          });
-          
-          // 为每个环形段添加事件监听器
-          ringSegments.forEach((segment) => {
-            // 鼠标悬停事件
-            segment.addEventListener('mouseover', function() {
-              const index = this.getAttribute('data-index');
-              const termName = this.getAttribute('data-term');
-              
-              // 重置所有环形段样式
-              ringSegments.forEach((seg) => {
-                seg.style.opacity = seg.originalStyle.opacity;
-                seg.style.transform = seg.originalStyle.transform;
-                seg.style.boxShadow = seg.originalStyle.boxShadow;
-                seg.style.clip = seg.originalStyle.clip;
-              });
-              
-              // 突出显示当前环形段
-              ringSegments.forEach((seg) => {
-                if (seg.getAttribute('data-index') === index) {
-                  seg.style.opacity = '1';
-                  seg.style.transform = 'scale(1.05)';
-                  seg.style.boxShadow = '0 0 15px rgba(0,255,255,0.5)';
-                }
-              });
-              
-              // 重置所有标签样式
-              tags.forEach((tag) => {
-                tag.style.background = 'rgba(0,0,0,0.4)';
-                tag.style.borderColor = 'rgba(0,255,255,0.2)';
-              });
-              
-              // 高亮对应的标签
-              tags.forEach((tag) => {
-                if (tag.textContent.includes(termName)) {
-                  tag.style.background = 'rgba(0,255,255,0.1)';
-                  tag.style.borderColor = '#00ffff';
-                }
-              });
-            });
-            
-            // 鼠标移出事件
-            segment.addEventListener('mouseout', function() {
-              // 恢复所有环形段样式
-              ringSegments.forEach((seg) => {
-                seg.style.opacity = seg.originalStyle.opacity;
-                seg.style.transform = seg.originalStyle.transform;
-                seg.style.boxShadow = seg.originalStyle.boxShadow;
-                seg.style.clip = seg.originalStyle.clip;
-              });
-              
-              // 恢复所有标签样式
-              tags.forEach((tag) => {
-                tag.style.background = 'rgba(0,0,0,0.4)';
-                tag.style.borderColor = 'rgba(0,255,255,0.2)';
-              });
-            });
-            
-            // 添加点击事件，跳转到对应标签页面
-            segment.addEventListener('click', function() {
-              const url = this.getAttribute('data-url');
-              window.location.href = url;
-            });
-          });
+
         </script>
       {{ end }}
       
