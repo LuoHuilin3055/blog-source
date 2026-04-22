@@ -488,11 +488,10 @@
           // 为每个环形段添加事件监听器
           ringSegments.forEach((segment) => {
             // 保存原始样式
-            const originalStyle = {
-              opacity: segment.style.opacity || '0.8',
-              transform: segment.style.transform || 'scale(1)',
-              boxShadow: segment.style.boxShadow || 'none'
-            };
+            const originalOpacity = segment.style.opacity || '0.8';
+            const originalTransform = segment.style.transform || 'scale(1)';
+            const originalBoxShadow = segment.style.boxShadow || 'none';
+            const originalClip = segment.style.clip;
             
             segment.addEventListener('mouseover', function() {
               const index = this.getAttribute('data-index');
@@ -503,16 +502,8 @@
                 seg.style.opacity = '0.8';
                 seg.style.transform = 'scale(1)';
                 seg.style.boxShadow = 'none';
-                // 恢复原始的clip属性
-                const originalStyle = seg.getAttribute('data-original-style');
-                if (originalStyle) {
-                  const styleParts = originalStyle.split('; ');
-                  styleParts.forEach(part => {
-                    const [property, value] = part.split(': ');
-                    if (property === 'clip' && value) {
-                      seg.style.clip = value;
-                    }
-                  });
+                if (seg.originalClip) {
+                  seg.style.clip = seg.originalClip;
                 }
               });
               
@@ -546,16 +537,8 @@
                 seg.style.opacity = '0.8';
                 seg.style.transform = 'scale(1)';
                 seg.style.boxShadow = 'none';
-                // 恢复原始的clip和transform属性
-                const originalStyle = seg.getAttribute('data-original-style');
-                if (originalStyle) {
-                  const styleParts = originalStyle.split('; ');
-                  styleParts.forEach(part => {
-                    const [property, value] = part.split(': ');
-                    if (property && value) {
-                      seg.style[property] = value;
-                    }
-                  });
+                if (seg.originalClip) {
+                  seg.style.clip = seg.originalClip;
                 }
               });
               
@@ -565,6 +548,9 @@
                 tag.style.borderColor = 'rgba(0,255,255,0.2)';
               });
             });
+            
+            // 存储原始clip值
+            segment.originalClip = originalClip;
             
             // 添加点击事件，跳转到对应标签页面
             segment.addEventListener('click', function() {
