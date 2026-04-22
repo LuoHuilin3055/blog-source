@@ -29,7 +29,10 @@
   <div style="display: flex; flex-direction: column;">
     {{ range .Site.RegularPages.GroupByDate "2006年1月" }}
     {{ if .Key }}
-    <a href="/archives/{{ .Key | urlize }}" style="
+    {{ $year := .Key | replaceRE "年.*" "" }}
+    {{ $month := .Key | replaceRE ".*年|月" "" }}
+    {{ $link := printf "/posts/%s/%s/" $year $month }}
+    <a href="{{ $link }}" style="
       display: flex;
       justify-content: space-between;
       align-items: center;

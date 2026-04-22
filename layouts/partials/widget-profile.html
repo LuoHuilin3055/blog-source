@@ -16,7 +16,7 @@
     margin: 0 auto 15px;
     border: 3px solid #3a5a8c;
   ">
-    <img src="{{ .Site.Params.avatar | default "/images/avatar.jpg" | absURL }}" alt="Avatar" style="
+    <img src="{{ .Site.Params.avatar }}" alt="Avatar" style="
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -52,10 +52,6 @@
     <div style="text-align: center;">
       <div style="color: #fff; font-size: 1.2em; font-weight: bold;">{{ len .Site.Taxonomies.tags }}</div>
       <div style="color: #888; font-size: 0.8em;">标签</div>
-    </div>
-    <div style="text-align: center;">
-      <div style="color: #fff; font-size: 1.2em; font-weight: bold;">{{ len .Site.Taxonomies.categories }}</div>
-      <div style="color: #888; font-size: 0.8em;">分类</div>
     </div>
   </div>
   
