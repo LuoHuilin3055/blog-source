@@ -283,7 +283,7 @@
           position: relative;
         ">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px;">
-            <!-- 圆形统计 - 简洁样式 -->
+            <!-- 环形统计 - 多个同心环，显示文章最多的5个标签 -->
             <div style="flex: 0 0 auto;">
               <div style="
                 width: 120px;
@@ -293,30 +293,40 @@
                 align-items: center;
                 justify-content: center;
               ">
-                <!-- 环形背景 -->
-                <div style="
-                  width: 100%;
-                  height: 100%;
-                  border: 8px solid rgba(255,255,255,0.1);
-                  border-radius: 50%;
-                  position: absolute;
-                "></div>
-                <!-- 环形进度 -->
-                <div style="
-                  width: 100%;
-                  height: 100%;
-                  border: 8px solid #fff;
-                  border-radius: 50%;
-                  position: absolute;
-                  border-top-color: transparent;
-                  border-right-color: transparent;
-                  border-bottom-color: #fff;
-                  border-left-color: #fff;
-                  transform: rotate(45deg);
-                "></div>
+                <!-- 多个同心环 - 显示文章最多的5个标签 -->
+                {{ $topTerms := .Data.Terms.ByCount | first 5 }}
+                {{ $totalCount := 0 }}
+                {{ range $topTerms }}
+                  {{ $totalCount = add $totalCount .Count }}
+                {{ end }}
+                
+                {{ $colors := slice "#00ffff" "#00d4ff" "#00b8ff" "#00a8ff" "#0096ff" }}
+                {{ range $index, $term := $topTerms }}
+                  {{ $percentage := div (float $term.Count) (float $totalCount) }}
+                  {{ $angle := mul $percentage 360 }}
+                  {{ $color := index $colors $index }}
+                  {{ $radius := sub 120 (mul $index 16) }}
+                  {{ $borderWidth := 8 }}
+                  
+                  <!-- 环形段 -->
+                  <div style="
+                    width: {{ $radius }}px;
+                    height: {{ $radius }}px;
+                    border: {{ $borderWidth }}px solid {{ $color }};
+                    border-radius: 50%;
+                    position: absolute;
+                    border-top-color: transparent;
+                    border-right-color: transparent;
+                    border-bottom-color: {{ $color }};
+                    border-left-color: {{ $color }};
+                    transform: rotate(45deg);
+                    opacity: 0.8;
+                  " title="{{ $term.Page.Title }} {{ $term.Count }}篇"></div>
+                {{ end }}
+                
                 <!-- 中心文字 -->
                 <div style="text-align: center;">
-                  <div style="font-size: 1.5em; font-weight: bold; color: #fff;">{{ len .Data.Terms }}</div>
+                  <div style="font-size: 1.5em; font-weight: bold; color: #00ffff;">{{ len .Data.Terms }}</div>
                   <div style="font-size: 0.7em; color: #888;">个标签</div>
                 </div>
               </div>
