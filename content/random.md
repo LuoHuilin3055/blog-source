@@ -7,23 +7,23 @@ type: page
 <script>
   // 文章列表
   const posts = [
-    "{{ relURL "/posts/从ChatGPT到AI Agent" }}",
-    "{{ relURL "/posts/数据结构" }}",
-    "{{ relURL "/posts/Linux" }}",
-    "{{ relURL "/posts/作业提交指南" }}",
-    "{{ relURL "/posts/出游" }}",
-    "{{ relURL "/posts/脚本" }}",
-    "{{ relURL "/posts/虚拟机配置" }}",
-    "{{ relURL "/posts/计算机教育中缺失的一课" }}",
-    "{{ relURL "/posts/网安导论" }}",
-    "{{ relURL "/posts/网络空间安全概论" }}",
-    "{{ relURL "/posts/CTF" }}",
-    "{{ relURL "/posts/Kali Linux" }}",
-    "{{ relURL "/posts/ex-skills" }}",
-    "{{ relURL "/posts/first-post" }}",
-    "{{ relURL "/posts/未命名" }}",
-    "{{ relURL "/posts/Java学习/蓝桥杯" }}",
-    "{{ relURL "/posts/Java学习/题目" }}"
+    "/myblog/posts/从ChatGPT到AI Agent/",
+    "/myblog/posts/数据结构/",
+    "/myblog/posts/Linux/",
+    "/myblog/posts/作业提交指南/",
+    "/myblog/posts/出游/",
+    "/myblog/posts/脚本/",
+    "/myblog/posts/虚拟机配置/",
+    "/myblog/posts/计算机教育中缺失的一课/",
+    "/myblog/posts/网安导论/",
+    "/myblog/posts/网络空间安全概论/",
+    "/myblog/posts/CTF/",
+    "/myblog/posts/Kali Linux/",
+    "/myblog/posts/ex-skills/",
+    "/myblog/posts/first-post/",
+    "/myblog/posts/未命名/",
+    "/myblog/posts/Java学习/蓝桥杯/",
+    "/myblog/posts/Java学习/题目/"
   ];
   
   // 随机选择一篇文章
