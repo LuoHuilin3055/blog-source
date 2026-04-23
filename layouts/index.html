@@ -75,7 +75,9 @@
       <!-- 左侧：文章列表 -->
       <div style="flex: 1;">
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
-          {{ range where .Site.RegularPages "Type" "posts" }}
+          {{ $posts := where .Site.RegularPages "Type" "posts" }}
+          {{ range $posts }}
+          {{ if not .IsNode }}
           <div style="
             background: #111;
             border-radius: 12px;
@@ -132,6 +134,7 @@
               text-align: center;
             ">阅读全文 →</a>
           </div>
+          {{ end }}
           {{ end }}
         </div>
       </div>

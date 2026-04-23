@@ -5,19 +5,18 @@
 {{ define "main" }}
   {{ $bgImage := "images/background.jpg" | absURL }}
   
-  <!-- 定义变量 -->
+  <!-- 判断是否为月度归档页面 -->
   {{ $isMonthlyArchive := false }}
-  {{ $year := "" }}
-  {{ $month := "" }}
+  {{ $archiveYear := 0 }}
+  {{ $archiveMonth := 0 }}
   
-  <!-- 从路径中提取年份和月份 -->
-  {{ if eq .Section "posts" }}
-    {{ if and (isset .Params "date") (eq (len .Sections) 0) }}
-      <!-- 检查是否为年月归档页面 -->
-      {{ $date := .Date }}
-      {{ $year = printf "%d" $date.Year }}
-      {{ $month = printf "%02d" $date.Month }}
-      {{ $isMonthlyArchive = true }}
+  {{ if and (eq .Section "posts") (eq .Kind "section") }}
+    {{ if and (isset .Parent "Title") (isset .Parent.Parent "Title") }}
+      {{ if eq .Parent.Parent.Section "posts" }}
+        {{ $isMonthlyArchive = true }}
+        {{ $archiveYear = .Parent.Title }}
+        {{ $archiveMonth = .Title }}
+      {{ end }}
     {{ end }}
   {{ end }}
   
@@ -223,55 +222,43 @@
         "></div>
       </div>
       
-      <!-- 根据页面类型显示不同内容 -->
-      {{ if eq .Section "posts" }}
-        {{ if $isMonthlyArchive }}
-          <!-- 月度归档页面 -->
-          {{ $posts := where .Site.RegularPages "Type" "posts" }}
-          {{ $filteredPosts := slice }}
-          {{ range $posts }}
-            {{ if and (eq .Date.Year (int $year)) (eq .Date.Month (int $month)) }}
+      {{ if $isMonthlyArchive }}
+        <!-- 月度归档页面 - 显示文章卡片 -->
+        {{ $posts := where .Site.RegularPages "Type" "posts" }}
+        {{ $filteredPosts := slice }}
+        {{ range $posts }}
+          {{ if not .IsNode }}
+            {{ if and (eq .Date.Year $archiveYear) (eq (printf "%02d" .Date.Month) $archiveMonth) }}
               {{ $filteredPosts = $filteredPosts | append . }}
             {{ end }}
           {{ end }}
-          
-          <div style="
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-          ">
-            {{ range $filteredPosts }}
-              {{ partial "article-card.html" . }}
-            {{ end }}
-          </div>
-          
-          <!-- 如果没有文章 -->
-          {{ if eq (len $filteredPosts) 0 }}
-          <div style="
-            text-align: center;
-            padding: 80px 20px;
-            color: #666;
-            background: rgba(0,0,0,0.5);
-            border-radius: 16px;
-            border: 1px solid #333;
-          ">
-            <p style="font-size: 1.2em;">该月份暂无文章</p>
-          </div>
+        {{ end }}
+        
+        <div style="
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+          gap: 30px;
+        ">
+          {{ range $filteredPosts }}
+            {{ partial "article-card.html" . }}
           {{ end }}
-        {{ else }}
-          <!-- 普通Posts页面 -->
-          <div style="
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-          ">
-            {{ range .Pages }}
-              {{ partial "article-card.html" . }}
-            {{ end }}
-          </div>
+        </div>
+        
+        <!-- 如果没有文章 -->
+        {{ if eq (len $filteredPosts) 0 }}
+        <div style="
+          text-align: center;
+          padding: 80px 20px;
+          color: #666;
+          background: rgba(0,0,0,0.5);
+          border-radius: 16px;
+          border: 1px solid #333;
+        ">
+          <p style="font-size: 1.2em;">该月份暂无文章</p>
+        </div>
         {{ end }}
       {{ else }}
-        <!-- 其他页面 - 显示时间线 -->
+        <!-- 普通 Posts 页面或归档首页 - 显示时间线 -->
         <div class="timeline-container">
           <!-- 归档头部 -->
           <div class="timeline-header">
@@ -324,20 +311,20 @@
             {{ end }}
           </div>
         </div>
-      {{ end }}
-      
-      <!-- 如果没有文章 -->
-      {{ if and (eq .Section "posts") (not $isMonthlyArchive) (eq (len .Pages) 0) }}
-      <div style="
-        text-align: center;
-        padding: 80px 20px;
-        color: #666;
-        background: rgba(0,0,0,0.5);
-        border-radius: 16px;
-        border: 1px solid #333;
-      ">
-        <p style="font-size: 1.2em;">暂无文章，敬请期待...</p>
-      </div>
+        
+        <!-- 如果没有文章 -->
+        {{ if eq (len .Pages) 0 }}
+        <div style="
+          text-align: center;
+          padding: 80px 20px;
+          color: #666;
+          background: rgba(0,0,0,0.5);
+          border-radius: 16px;
+          border: 1px solid #333;
+        ">
+          <p style="font-size: 1.2em;">暂无文章，敬请期待...</p>
+        </div>
+        {{ end }}
       {{ end }}
     </div>
   </div>
