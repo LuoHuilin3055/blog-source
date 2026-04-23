@@ -11,15 +11,13 @@
   {{ $month := "" }}
   
   <!-- 从路径中提取年份和月份 -->
-  {{ if and (eq .Section "posts") (eq (len .Sections) 1) (eq (len .CurrentSection.Parent.Sections) 1) }}
-    {{ $yearSection := .CurrentSection.Parent }}
-    {{ $monthSection := .CurrentSection }}
-    {{ if and (len $yearSection.Title) (len $monthSection.Title) }}
-      {{ if and (eq (len $yearSection.Title) 4) (eq (len $monthSection.Title) 2) }}
-        {{ $year = $yearSection.Title }}
-        {{ $month = $monthSection.Title }}
-        {{ $isMonthlyArchive = true }}
-      {{ end }}
+  {{ if eq .Section "posts" }}
+    {{ if and (isset .Params "date") (eq (len .Sections) 0) }}
+      <!-- 检查是否为年月归档页面 -->
+      {{ $date := .Date }}
+      {{ $year = printf "%d" $date.Year }}
+      {{ $month = printf "%02d" $date.Month }}
+      {{ $isMonthlyArchive = true }}
     {{ end }}
   {{ end }}
   
@@ -230,7 +228,12 @@
         {{ if $isMonthlyArchive }}
           <!-- 月度归档页面 -->
           {{ $posts := where .Site.RegularPages "Type" "posts" }}
-          {{ $filteredPosts := where $posts "Date.Year" (int $year) | where "Date.Month" (int $month) }}
+          {{ $filteredPosts := slice }}
+          {{ range $posts }}
+            {{ if and (eq .Date.Year (int $year)) (eq .Date.Month (int $month)) }}
+              {{ $filteredPosts = $filteredPosts | append . }}
+            {{ end }}
+          {{ end }}
           
           <div style="
             display: grid;
