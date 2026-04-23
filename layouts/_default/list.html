@@ -14,8 +14,8 @@
     {{ if and (isset .Parent "Title") (isset .Parent.Parent "Title") }}
       {{ if eq .Parent.Parent.Section "posts" }}
         {{ $isMonthlyArchive = true }}
-        {{ $archiveYear = .Parent.Title }}
-        {{ $archiveMonth = .Title }}
+        {{ $archiveYear = .Parent.Title | int }}
+        {{ $archiveMonth = .Title | int }}
       {{ end }}
     {{ end }}
   {{ end }}
@@ -228,7 +228,7 @@
         {{ $filteredPosts := slice }}
         {{ range $posts }}
           {{ if not .IsNode }}
-            {{ if and (eq .Date.Year $archiveYear) (eq (printf "%02d" .Date.Month) $archiveMonth) }}
+            {{ if and (eq .Date.Year $archiveYear) (eq .Date.Month $archiveMonth) }}
               {{ $filteredPosts = $filteredPosts | append . }}
             {{ end }}
           {{ end }}
