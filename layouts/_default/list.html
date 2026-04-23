@@ -5,6 +5,24 @@
 {{ define "main" }}
   {{ $bgImage := "images/background.jpg" | absURL }}
   
+  <!-- 定义变量 -->
+  {{ $isMonthlyArchive := false }}
+  {{ $year := "" }}
+  {{ $month := "" }}
+  
+  <!-- 从路径中提取年份和月份 -->
+  {{ if and (eq .Section "posts") (eq (len .Sections) 1) (eq (len .CurrentSection.Parent.Sections) 1) }}
+    {{ $yearSection := .CurrentSection.Parent }}
+    {{ $monthSection := .CurrentSection }}
+    {{ if and (len $yearSection.Title) (len $monthSection.Title) }}
+      {{ if and (eq (len $yearSection.Title) 4) (eq (len $monthSection.Title) 2) }}
+        {{ $year = $yearSection.Title }}
+        {{ $month = $monthSection.Title }}
+        {{ $isMonthlyArchive = true }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  
   <style>
     @keyframes fadeInDown {
       from {
@@ -209,18 +227,48 @@
       
       <!-- 根据页面类型显示不同内容 -->
       {{ if eq .Section "posts" }}
-        <!-- Posts页面 - 显示文章卡片 -->
-        <div style="
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-          gap: 30px;
-        ">
-          {{ range .Pages }}
-            {{ partial "article-card.html" . }}
+        {{ if $isMonthlyArchive }}
+          <!-- 月度归档页面 -->
+          {{ $posts := where .Site.RegularPages "Type" "posts" }}
+          {{ $filteredPosts := where $posts "Date.Year" (int $year) | where "Date.Month" (int $month) }}
+          
+          <div style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+          ">
+            {{ range $filteredPosts }}
+              {{ partial "article-card.html" . }}
+            {{ end }}
+          </div>
+          
+          <!-- 如果没有文章 -->
+          {{ if eq (len $filteredPosts) 0 }}
+          <div style="
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+            background: rgba(0,0,0,0.5);
+            border-radius: 16px;
+            border: 1px solid #333;
+          ">
+            <p style="font-size: 1.2em;">该月份暂无文章</p>
+          </div>
           {{ end }}
-        </div>
+        {{ else }}
+          <!-- 普通Posts页面 -->
+          <div style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+          ">
+            {{ range .Pages }}
+              {{ partial "article-card.html" . }}
+            {{ end }}
+          </div>
+        {{ end }}
       {{ else }}
-        <!-- 归档页面 - 显示时间线 -->
+        <!-- 其他页面 - 显示时间线 -->
         <div class="timeline-container">
           <!-- 归档头部 -->
           <div class="timeline-header">
@@ -276,7 +324,7 @@
       {{ end }}
       
       <!-- 如果没有文章 -->
-      {{ if and (eq .Section "posts") (eq (len .Pages) 0) }}
+      {{ if and (eq .Section "posts") (not $isMonthlyArchive) (eq (len .Pages) 0) }}
       <div style="
         text-align: center;
         padding: 80px 20px;

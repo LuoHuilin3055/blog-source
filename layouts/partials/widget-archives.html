@@ -32,7 +32,7 @@
     {{ $year := .Key | replaceRE "年.*" "" }}
     {{ $month := .Key | replaceRE ".*年|月" "" }}
     {{ $month := printf "%02d" (int $month) }} <!-- 确保月份是两位数 -->
-    {{ $link := printf "/posts/%s/%s/" $year $month }}
+    {{ $link := printf "/myblog/posts/%s/%s/" $year $month }} <!-- 添加/myblog子目录 -->
     <a href="{{ $link }}" style="
       display: flex;
       justify-content: space-between;
