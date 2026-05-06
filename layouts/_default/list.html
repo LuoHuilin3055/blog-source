@@ -257,59 +257,19 @@
           <p style="font-size: 1.2em;">该月份暂无文章</p>
         </div>
         {{ end }}
-      {{ else }}
-        <!-- 普通 Posts 页面或归档首页 - 显示时间线 -->
-        <div class="timeline-container">
-          <!-- 归档头部 -->
-          <div class="timeline-header">
-            <h2>全部文章 - {{ len .Pages }}</h2>
-            <span>按时间顺序排列</span>
-          </div>
-          
-          <!-- 时间线 -->
-          <div class="timeline">
-            {{ $pages := .Pages }}
-            {{ $years := $pages.GroupByDate "2006" }}
-            
-            {{ if $years }}
-              {{ range $years }}
-                <div class="timeline-year">
-                  <h3>{{ .Key }}</h3>
-                  {{ range .Pages.ByDate.Reverse }}
-                    <div class="timeline-item">
-                      {{ if .Params.cover }}
-                      <div class="timeline-item-image">
-                        <img src="{{ .Params.cover | absURL }}" alt="{{ .Title }}" loading="lazy" />
-                      </div>
-                      {{ end }}
-                      <div class="timeline-item-content">
-                        <div class="timeline-item-date">{{ dateFormat "2006-01-02" .Date }}</div>
-                        <h4 class="timeline-item-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
-                        {{ if .Params.tags }}
-                          <div class="timeline-tags">
-                            {{ range .Params.tags }}
-                              <span class="timeline-tag">{{ . }}</span>
-                            {{ end }}
-                          </div>
-                        {{ end }}
-                      </div>
-                    </div>
-                  {{ end }}
-                </div>
-              {{ end }}
-            {{ else }}
-              <div style="
-                text-align: center;
-                padding: 80px 20px;
-                color: #666;
-                background: rgba(0,0,0,0.5);
-                border-radius: 16px;
-                border: 1px solid #333;
-              ">
-                <p style="font-size: 1.2em;">暂无文章，敬请期待...</p>
-              </div>
+      {{ else if eq .Section "posts" }}
+        <!-- Posts 列表页面 - 显示卡片布局 -->
+        {{ $posts := where .Site.RegularPages "Type" "posts" }}
+        <div style="
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+          gap: 30px;
+        ">
+          {{ range $posts }}
+            {{ if not .IsNode }}
+              {{ partial "article-card.html" . }}
             {{ end }}
-          </div>
+          {{ end }}
         </div>
         
         <!-- 如果没有文章 -->
