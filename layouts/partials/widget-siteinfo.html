@@ -46,7 +46,7 @@
       <span style="color: #fff; font-size: 0.9em;">
         {{ $totalWords := 0 }}
         {{ range where .Site.RegularPages "Type" "posts" }}
-          {{ $totalWords = add $totalWords .WordCount }}
+          {{ $totalWords = add $totalWords (partial "custom-wordcount.html" .) }}
         {{ end }}
         {{ $totalWords }}字
       </span>

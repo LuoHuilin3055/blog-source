@@ -79,7 +79,7 @@
       flex-wrap: wrap;
     ">
       <span>📅 {{ .Date.Format "2006-01-02" }}</span>
-      <span>📝 {{ .WordCount }} 字</span>
+      <span>📝 {{ partial "custom-wordcount.html" . }} 字</span>
       <span>⏱️ {{ .ReadingTime }} 分钟阅读</span>
     </div>
     
