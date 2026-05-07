@@ -5,36 +5,38 @@
     line-height: 2;
   }
 
-  /* 确保所有元素都使用这个字体设置 */
   * {
     font-family: inherit;
     line-height: inherit;
   }
 
-  /* 标题字体可以保持特殊样式 */
   h1, h2, h3, h4, h5, h6 {
     font-family: "Comic Sans MS", "楷体", "KaiTi", "STKaiti", serif;
     line-height: 1.8;
   }
 
-  /* 代码块使用等宽字体 */
   code, pre {
     font-family: "Consolas", "Monaco", "Courier New", monospace;
     line-height: 1.5;
   }
 
-  /* 链接和按钮 */
   a, button {
     font-family: "Comic Sans MS", "楷体", "KaiTi", "STKaiti", serif;
   }
 
-  /* 表单输入 */
   input, textarea, select {
     font-family: "Comic Sans MS", "楷体", "KaiTi", "STKaiti", serif;
   }
 
   /* 图片滑动容器 */
-  .article-content .image-slider {
+  .image-slider-container {
+    width: 100%;
+    overflow: hidden;
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .image-slider {
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
@@ -44,18 +46,16 @@
     white-space: nowrap;
   }
 
-  /* 隐藏滚动条但保持滚动功能 */
-  .article-content .image-slider::-webkit-scrollbar {
+  .image-slider::-webkit-scrollbar {
     display: none;
   }
 
-  .article-content .image-slider {
+  .image-slider {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 
-  /* 文章内容图片样式 */
-  .article-content .image-slider img {
+  .image-slider img {
     flex-shrink: 0;
     width: 280px;
     height: 200px;
@@ -63,16 +63,15 @@
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
   }
 
-  /* 鼠标悬停效果 */
-  .article-content .image-slider img:hover {
+  .image-slider img:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 30px rgba(0,255,255,0.3);
   }
 
-  /* 滑动提示指示器 */
-  .article-content .slider-hint {
+  .slider-hint {
     text-align: center;
     color: #888;
     font-size: 0.85em;
@@ -84,47 +83,88 @@
     0%, 100% { opacity: 0.5; }
     50% { opacity: 1; }
   }
+
+  /* 单张图片样式 */
+  .single-image-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .single-image-container img {
+    max-width: 100%;
+    height: auto;
+    max-height: 500px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .single-image-container img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,255,255,0.3);
+  }
 </style>
 
 <!-- 不蒜子网站统计 -->
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-<!-- 自定义统计脚本 -->
+<!-- 图片滑动效果脚本 -->
 <script>
-  // 不蒜子回调函数
-  function busuanziCallback() {
-    // 可以在这里处理统计数据
-  }
-
-  // 页面加载完成后执行
-  window.addEventListener('load', function() {
-    // 确保不蒜子脚本已加载
-    if (typeof busuanzi !== 'undefined') {
-      busuanziCallback();
-    }
+  document.addEventListener('DOMContentLoaded', function() {
+    // 找到所有文章内容区域
+    const articleContents = document.querySelectorAll('.article-content');
     
-    // 为所有包含多张图片的段落添加滑动容器
-    document.querySelectorAll('.article-content p').forEach(function(p) {
-      var images = p.querySelectorAll('img');
-      if (images.length > 1) {
-        // 创建滑动容器
-        var slider = document.createElement('div');
-        slider.className = 'image-slider';
+    articleContents.forEach(function(content) {
+      // 找到所有包含图片的段落
+      const paragraphs = content.querySelectorAll('p');
+      
+      paragraphs.forEach(function(p) {
+        const images = p.querySelectorAll('img');
         
-        // 将所有图片移到滑动容器中
-        images.forEach(function(img) {
-          slider.appendChild(img);
-        });
-        
-        // 将滑动容器添加到段落中
-        p.appendChild(slider);
-        
-        // 添加滑动提示
-        var hint = document.createElement('div');
-        hint.className = 'slider-hint';
-        hint.textContent = '← 左右滑动查看更多图片 →';
-        p.appendChild(hint);
-      }
+        if (images.length > 1) {
+          // 多张图片 - 创建滑动容器
+          const container = document.createElement('div');
+          container.className = 'image-slider-container';
+          
+          const slider = document.createElement('div');
+          slider.className = 'image-slider';
+          
+          // 将图片移到滑动容器中
+          images.forEach(function(img) {
+            slider.appendChild(img);
+          });
+          
+          container.appendChild(slider);
+          
+          // 添加滑动提示
+          const hint = document.createElement('div');
+          hint.className = 'slider-hint';
+          hint.textContent = '← 左右滑动查看更多图片 →';
+          container.appendChild(hint);
+          
+          // 在段落后面插入滑动容器
+          p.parentNode.insertBefore(container, p.nextSibling);
+          
+          // 清空原段落中的图片引用文本
+          p.innerHTML = p.innerHTML.replace(/!\[.*?\]\(.*?\)/g, '').trim();
+          
+          // 如果段落现在为空，隐藏它
+          if (!p.textContent.trim()) {
+            p.style.display = 'none';
+          }
+        } else if (images.length === 1) {
+          // 单张图片 - 创建单张图片容器
+          const container = document.createElement('div');
+          container.className = 'single-image-container';
+          
+          const img = images[0];
+          container.appendChild(img);
+          
+          // 替换段落内容
+          p.innerHTML = '';
+          p.appendChild(container);
+        }
+      });
     });
   });
 </script>
