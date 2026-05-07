@@ -70,11 +70,9 @@
         
         <div style="color: #ccc; margin: 20px 0; display: flex; gap: 20px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
           <span>📅 {{ .Date.Format "2006-01-02" }}</span>
-          {{ if ne .Date .Lastmod }}
-          <span>✏️ {{ .Lastmod.Format "2006-01-02" }}</span>
-          {{ end }}
+          <span>✏️ {{ if .Lastmod }}{{ .Lastmod.Format "2006-01-02" }}{{ else }}{{ .Date.Format "2006-01-02" }}{{ end }}</span>
           <span>📝 {{ partial "custom-wordcount.html" . }} 字</span>
-          <span>⏱️ {{ .ReadingTime }} 分钟</span>
+          <span>⏱️ {{ partial "custom-readingtime.html" . }} 分钟</span>
         </div>
         
         <!-- 文章标签 -->

@@ -113,7 +113,7 @@
               <a href="{{ .Permalink }}" style="color: #fff; text-decoration: none;">{{ .Title }}</a>
             </h3>
             <div style="color: #888; font-size: 0.85em; margin-bottom: 15px;">
-              {{ .Date.Format "2006-01-02" }} | {{ .ReadingTime }} 分钟
+              {{ .Date.Format "2006-01-02" }} | {{ partial "custom-readingtime.html" . }} 分钟
             </div>
             <div style="color: #ccc; line-height: 1.6; margin-bottom: 20px; flex: 1;">
               {{ .Summary | plainify | truncate 80 }}
