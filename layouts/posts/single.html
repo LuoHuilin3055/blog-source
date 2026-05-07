@@ -525,6 +525,82 @@
       font-size: 1.2em;
     }
   }
+  
+  /* 图片滑动容器 */
+  .image-slider-container {
+    width: 100%;
+    overflow: hidden;
+    margin: 20px 0;
+    position: relative;
+  }
+  
+  .image-slider {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    gap: 15px;
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+  
+  .image-slider::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .image-slider {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .image-slider img {
+    flex-shrink: 0;
+    width: 280px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .image-slider img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(0,255,255,0.3);
+  }
+  
+  .slider-hint {
+    text-align: center;
+    color: #888;
+    font-size: 0.85em;
+    margin-top: 5px;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+  
+  /* 单张图片样式 */
+  .single-image-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .single-image-container img {
+    max-width: 100%;
+    height: auto;
+    max-height: 500px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .single-image-container img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,255,255,0.3);
+  }
 </style>
 <script>
   // 代码块复制功能
@@ -543,6 +619,61 @@
           }).catch(err => {
             console.error('复制失败:', err);
           });
+        }
+      });
+    });
+    
+    // 图片滑动效果
+    const articleContents = document.querySelectorAll('.article-content');
+    
+    articleContents.forEach(function(content) {
+      const paragraphs = content.querySelectorAll('p');
+      
+      paragraphs.forEach(function(p) {
+        const images = p.querySelectorAll('img');
+        
+        if (images.length > 1) {
+          // 多张图片 - 创建滑动容器
+          const container = document.createElement('div');
+          container.className = 'image-slider-container';
+          
+          const slider = document.createElement('div');
+          slider.className = 'image-slider';
+          
+          // 将图片移到滑动容器中
+          images.forEach(function(img) {
+            slider.appendChild(img);
+          });
+          
+          container.appendChild(slider);
+          
+          // 添加滑动提示
+          const hint = document.createElement('div');
+          hint.className = 'slider-hint';
+          hint.textContent = '← 左右滑动查看更多图片 →';
+          container.appendChild(hint);
+          
+          // 在段落后面插入滑动容器
+          p.parentNode.insertBefore(container, p.nextSibling);
+          
+          // 清空原段落中的图片引用文本
+          p.innerHTML = p.innerHTML.replace(/!\[.*?\]\(.*?\)/g, '').trim();
+          
+          // 如果段落现在为空，隐藏它
+          if (!p.textContent.trim()) {
+            p.style.display = 'none';
+          }
+        } else if (images.length === 1) {
+          // 单张图片 - 创建单张图片容器
+          const container = document.createElement('div');
+          container.className = 'single-image-container';
+          
+          const img = images[0];
+          container.appendChild(img);
+          
+          // 替换段落内容
+          p.innerHTML = '';
+          p.appendChild(container);
         }
       });
     });

@@ -110,9 +110,16 @@
 
 <!-- 图片滑动效果脚本 -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  window.addEventListener('DOMContentLoaded', function() {
+    console.log('Image slider script loaded');
+    
     // 找到所有文章内容区域
     const articleContents = document.querySelectorAll('.article-content');
+    
+    if (articleContents.length === 0) {
+      console.log('No article-content found');
+      return;
+    }
     
     articleContents.forEach(function(content) {
       // 找到所有包含图片的段落
@@ -122,6 +129,8 @@
         const images = p.querySelectorAll('img');
         
         if (images.length > 1) {
+          console.log('Found multiple images:', images.length);
+          
           // 多张图片 - 创建滑动容器
           const container = document.createElement('div');
           container.className = 'image-slider-container';
@@ -131,6 +140,7 @@
           
           // 将图片移到滑动容器中
           images.forEach(function(img) {
+            img.className = 'slider-image';
             slider.appendChild(img);
           });
           
