@@ -32,6 +32,23 @@
   input, textarea, select {
     font-family: "Comic Sans MS", "楷体", "KaiTi", "STKaiti", serif;
   }
+  
+  /* 文章内容图片大小限制 */
+  .article-content img {
+    max-width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    margin: 10px 0;
+  }
+  
+  /* 文章内容中的图片容器 */
+  .article-content .figure {
+    margin: 15px 0;
+    text-align: center;
+  }
 </style>
 
 <!-- 不蒜子网站统计 -->
