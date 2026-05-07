@@ -156,18 +156,18 @@
     border-bottom-color: #00ffff;
   }
   
-  /* 单张图片样式 */
-  .article-content img.single-image {
+  /* 默认图片样式 */
+  .article-content img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    margin: 20px 0;
-    display: block;
+    margin: 10px 0;
+    display: inline-block;
     box-shadow: 0 4px 15px rgba(0,255,255,0.3);
     transition: all 0.3s ease;
   }
   
-  .article-content img.single-image:hover {
+  .article-content img:hover {
     transform: scale(1.02);
     box-shadow: 0 8px 25px rgba(0,255,255,0.5);
   }
@@ -582,7 +582,7 @@
     50% { opacity: 1; }
   }
   
-  /* 单张图片样式 */
+  /* 单张图片容器 */
   .single-image-container {
     text-align: center;
     margin: 20px 0;
@@ -623,14 +623,15 @@
       });
     });
     
-    // 图片滑动效果
+    // 图片滑动效果 - 处理 p 和 li 标签中的图片
     const articleContents = document.querySelectorAll('.article-content');
     
     articleContents.forEach(function(content) {
-      const paragraphs = content.querySelectorAll('p');
+      // 处理所有包含图片的元素（p 和 li）
+      const elementsWithImages = content.querySelectorAll('p, li');
       
-      paragraphs.forEach(function(p) {
-        const images = p.querySelectorAll('img');
+      elementsWithImages.forEach(function(element) {
+        const images = element.querySelectorAll('img');
         
         if (images.length > 1) {
           // 多张图片 - 创建滑动容器
@@ -653,15 +654,13 @@
           hint.textContent = '← 左右滑动查看更多图片 →';
           container.appendChild(hint);
           
-          // 在段落后面插入滑动容器
-          p.parentNode.insertBefore(container, p.nextSibling);
+          // 在元素后面插入滑动容器
+          element.parentNode.insertBefore(container, element.nextSibling);
           
-          // 清空原段落中的图片引用文本
-          p.innerHTML = p.innerHTML.replace(/!\[.*?\]\(.*?\)/g, '').trim();
-          
-          // 如果段落现在为空，隐藏它
-          if (!p.textContent.trim()) {
-            p.style.display = 'none';
+          // 如果元素现在只有图片，隐藏它
+          const textContent = element.textContent.trim();
+          if (!textContent && images.length > 0) {
+            element.style.display = 'none';
           }
         } else if (images.length === 1) {
           // 单张图片 - 创建单张图片容器
@@ -671,9 +670,8 @@
           const img = images[0];
           container.appendChild(img);
           
-          // 替换段落内容
-          p.innerHTML = '';
-          p.appendChild(container);
+          // 在元素后面插入单张图片容器
+          element.parentNode.insertBefore(container, element.nextSibling);
         }
       });
     });
