@@ -33,27 +33,56 @@
     font-family: "Comic Sans MS", "楷体", "KaiTi", "STKaiti", serif;
   }
 
-  /* 文章内容图片大小限制 - 一行三张 */
-  .article-content img {
-    max-width: calc(33.33% - 10px);
-    height: auto;
-    max-height: 300px;
+  /* 图片滑动容器 */
+  .article-content .image-slider {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    gap: 15px;
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+
+  /* 隐藏滚动条但保持滚动功能 */
+  .article-content .image-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  .article-content .image-slider {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* 文章内容图片样式 */
+  .article-content .image-slider img {
+    flex-shrink: 0;
+    width: 280px;
+    height: 200px;
     object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    margin: 5px;
-    display: inline-block;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  /* 文章内容中的图片容器 */
-  .article-content .figure {
-    margin: 15px 0;
-    text-align: center;
+  /* 鼠标悬停效果 */
+  .article-content .image-slider img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(0,255,255,0.3);
   }
 
-  /* 确保段落中的图片正确排列 */
-  .article-content p {
+  /* 滑动提示指示器 */
+  .article-content .slider-hint {
     text-align: center;
+    color: #888;
+    font-size: 0.85em;
+    margin-top: 5px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
   }
 </style>
 
@@ -73,5 +102,29 @@
     if (typeof busuanzi !== 'undefined') {
       busuanziCallback();
     }
+    
+    // 为所有包含多张图片的段落添加滑动容器
+    document.querySelectorAll('.article-content p').forEach(function(p) {
+      var images = p.querySelectorAll('img');
+      if (images.length > 1) {
+        // 创建滑动容器
+        var slider = document.createElement('div');
+        slider.className = 'image-slider';
+        
+        // 将所有图片移到滑动容器中
+        images.forEach(function(img) {
+          slider.appendChild(img);
+        });
+        
+        // 将滑动容器添加到段落中
+        p.appendChild(slider);
+        
+        // 添加滑动提示
+        var hint = document.createElement('div');
+        hint.className = 'slider-hint';
+        hint.textContent = '← 左右滑动查看更多图片 →';
+        p.appendChild(hint);
+      }
+    });
   });
 </script>
